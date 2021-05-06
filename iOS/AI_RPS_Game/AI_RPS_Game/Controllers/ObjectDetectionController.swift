@@ -20,14 +20,14 @@ class ObjectDetectionController: UIViewController {
     private var numberOfPhotosToTake: Int = 16
     private let defaults = UserDefaults.standard
     private let cameraShutterSoundID: SystemSoundID = 1108 // use 1157 if 1108 is unsavory
-    private var trackedItems: [ThroatPartType] = [.tongue, .tonsil, .uvula, .pharynx]
+    private var trackedItems: [DetectedObjectType] = DetectedObjectType.allObjectTypes
     private var camera: Camera!
     private var visionService: VisionService!
     private let initialInstruction: String = "Hold the camera in front of your throat"
     private let screenArea: CGFloat = UIScreen.main.bounds.width * UIScreen.main.bounds.height
     private var delayTimer: Timer?
     private var willDelay: Bool = false
-    private var currentThroatPart: ThroatPart?
+//    private var currentThroatPart: ThroatPart?
     //private var notification = NotificationCenter.default
     private var mainQueue = OperationQueue.main
     
@@ -444,19 +444,19 @@ extension ObjectDetectionController: AVCapturePhotoCaptureDelegate {
 //        throatScan.appendPart(throatPart: throatPart)
 //    }
     
-    private func updateInstructionLabel(type: ThroatPartType) {
-        switch type {
-        case .pharynx:
-            instructionLabel.text = "Looking for your pharynx"
-        case .uvula:
-            instructionLabel.text = "Looking for your uvula"
-        case .tonsil:
-            instructionLabel.text = "Looking for your tonsil"
-        case .tongue:
-            instructionLabel.text = "Looking for your tongue"
-        default: break
-        }
-    }
+//    private func updateInstructionLabel(type: DetectedObjectType) {
+//        switch type {
+//        case .pharynx:
+//            instructionLabel.text = "Looking for your pharynx"
+//        case .uvula:
+//            instructionLabel.text = "Looking for your uvula"
+//        case .tonsil:
+//            instructionLabel.text = "Looking for your tonsil"
+//        case .tongue:
+//            instructionLabel.text = "Looking for your tongue"
+//        default: break
+//        }
+//    }
 }
 
 //MARK: Pharynx Guide
@@ -471,10 +471,11 @@ extension ObjectDetectionController: ThroatPartScannerProtocol {
         let scanResult = getScanResult(newThroatParts: newThroatParts)
         switch scanResult {
         case .success(let throatPart):
-            currentThroatPart = throatPart
+            print("Successfully found a part \(throatPart)")
+//            currentThroatPart = throatPart
             player?.stop()
             updateCameraFocusPoint(throatPart: throatPart)
-            camera.takePhoto()
+//            camera.takePhoto()
             delayTimer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(updateDelayTimer), userInfo: nil, repeats: true)
         case .error(let message):
             print("Error message \(message)")
@@ -499,7 +500,7 @@ extension ObjectDetectionController: ThroatPartScannerProtocol {
     
     @objc func updateDelayTimer() {
         print("done waiting")
-        currentThroatPart = nil
+//        currentThroatPart = nil
         delayTimer?.invalidate()
         willDelay = false
     }
@@ -507,9 +508,12 @@ extension ObjectDetectionController: ThroatPartScannerProtocol {
     //MARK: ThroatPartScanner Helpers
     
     private func getScanResult(newThroatParts: [ThroatPart]) -> ScanResultType {
-        print("Scan Results \(newThroatParts)")
-        return .error(message: "Error not implemented yet")
-        //get tounge area
+        guard let optionalPart: ThroatPart = newThroatParts.first else {
+            return .error(message: "no part from new throat parts")
+        }
+        return .success(throatPart: optionalPart)
+//        return .error(message: "Error not implemented yet")
+//        //get tounge area
 //        var toungeArea: CGFloat = 0
 //        if let tounge = newThroatParts.first(where: {$0.type == .tongue}) {
 //            toungeArea = tounge.location.width * tounge.location.height

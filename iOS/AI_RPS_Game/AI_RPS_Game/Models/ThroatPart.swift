@@ -9,7 +9,7 @@ import UIKit.UIImage
 import Vision.VNObservation
 
 protocol ThroatImage {
-    var type: ThroatPartType { get }
+    var type: DetectedObjectType { get }
     var image: UIImage! { get }
     var isSelected: Bool { get set }
 }
@@ -17,7 +17,7 @@ protocol ThroatImage {
 struct UnknownThroatPart: ThroatImage {
     var image: UIImage!
     var isSelected: Bool = true
-    var type: ThroatPartType = .unknown
+    var type: DetectedObjectType = .unknown
     
     init(image: UIImage) {
         self.image = image
@@ -26,7 +26,7 @@ struct UnknownThroatPart: ThroatImage {
 
 struct ThroatPart: Identifiable, ThroatImage {
     let id = String.randomString(length: 10)
-    private(set) var type: ThroatPartType
+    private(set) var type: DetectedObjectType
     private(set) var confidence: VNConfidence
     private(set) var confidenceText: String
     private(set) var location: CGRect
@@ -34,8 +34,8 @@ struct ThroatPart: Identifiable, ThroatImage {
     var isSelected = true
     
     init?(trackedObject: VNRecognizedObjectObservation, location: CGRect) {
-        guard let label = trackedObject.labels.first?.identifier, let throatPart = ThroatPartType(rawValue: label) else {
-            assertionFailure("Unable to retrieve identifier for result: \(trackedObject)")
+        guard let label = trackedObject.labels.first?.identifier, let throatPart = DetectedObjectType(rawValue: label) else {
+//            assertionFailure("Unable to retrieve identifier for result: \(trackedObject)")
             return nil
         }
         self.type = throatPart

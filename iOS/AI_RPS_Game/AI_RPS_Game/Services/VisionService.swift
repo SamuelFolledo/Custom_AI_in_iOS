@@ -11,7 +11,7 @@ import Vision
 
 protocol VisionServiceInputs {
     func performRequest(for imageRequestHandler: VNImageRequestHandler)
-    func updateTrackedItems(trackedItems: [ThroatPartType])
+    func updateTrackedItems(trackedItems: [DetectedObjectType])
 }
 
 protocol ThroatPartScannerProtocol {
@@ -24,7 +24,7 @@ class VisionService: VisionServiceInputs {
     enum Config {
         /// Confidence in % expressed from 0 - 1 which will be used
         /// to draw bounding boxes on the images in the preview
-        static let confidence: VNConfidence = 0.4
+        static let confidence: VNConfidence = 0.2
     }
     
     // MARK: Private
@@ -32,13 +32,13 @@ class VisionService: VisionServiceInputs {
 
     /// Preview used to draw bounding boxes with detected items
     fileprivate var previewView: CameraPreview!
-    fileprivate var trackedItems: [ThroatPartType] = []
+    fileprivate var trackedItems: [DetectedObjectType] = []
     fileprivate var delegate: ThroatPartScannerProtocol? //use delegate protocol in the future
     private var isUvulaAvailable: Bool = false
     private var isPharynxAvailable: Bool = false
 
     // MARK: Public
-    init(with preview: CameraPreview, trackedItems: [ThroatPartType] = [], delegate: ThroatPartScannerProtocol) {
+    init(with preview: CameraPreview, trackedItems: [DetectedObjectType] = [], delegate: ThroatPartScannerProtocol) {
         self.previewView = preview
         self.trackedItems = trackedItems
         self.delegate = delegate
@@ -55,7 +55,7 @@ class VisionService: VisionServiceInputs {
         }
     }
 
-    func updateTrackedItems(trackedItems: [ThroatPartType]) {
+    func updateTrackedItems(trackedItems: [DetectedObjectType]) {
         self.trackedItems = trackedItems
     }
     
