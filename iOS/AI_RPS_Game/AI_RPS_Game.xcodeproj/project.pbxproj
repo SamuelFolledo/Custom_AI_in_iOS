@@ -30,10 +30,10 @@
 		549A83982643CFBF00CB861E /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 549A838A2643CFBF00CB861E /* Date+Extensions.swift */; };
 		549A83992643CFBF00CB861E /* UITextField+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 549A838B2643CFBF00CB861E /* UITextField+Extensions.swift */; };
 		549A839C2643D04300CB861E /* CameraErrors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 549A839B2643D04300CB861E /* CameraErrors.swift */; };
-		549A839F2643D09100CB861E /* ThroatPart.swift in Sources */ = {isa = PBXBuildFile; fileRef = 549A839D2643D09100CB861E /* ThroatPart.swift */; };
-		549A83A02643D09100CB861E /* ThroatPartType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 549A839E2643D09100CB861E /* ThroatPartType.swift */; };
+		549A839F2643D09100CB861E /* DetectedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 549A839D2643D09100CB861E /* DetectedObject.swift */; };
+		549A83A02643D09100CB861E /* DetectedObjectType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 549A839E2643D09100CB861E /* DetectedObjectType.swift */; };
 		549A83A52643D0E200CB861E /* VisionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 549A83A32643D0E100CB861E /* VisionService.swift */; };
-		549A83A62643D0E200CB861E /* MLModelService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 549A83A42643D0E200CB861E /* MLModelService.swift */; };
+		549A83A62643D0E200CB861E /* VisionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 549A83A42643D0E200CB861E /* VisionModel.swift */; };
 		549A83A82643D11500CB861E /* my_custom_model.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 549A83A72643D11500CB861E /* my_custom_model.mlmodel */; };
 /* End PBXBuildFile section */
 
@@ -63,10 +63,10 @@
 		549A838A2643CFBF00CB861E /* Date+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Date+Extensions.swift"; sourceTree = "<group>"; };
 		549A838B2643CFBF00CB861E /* UITextField+Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UITextField+Extensions.swift"; sourceTree = "<group>"; };
 		549A839B2643D04300CB861E /* CameraErrors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraErrors.swift; sourceTree = "<group>"; };
-		549A839D2643D09100CB861E /* ThroatPart.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThroatPart.swift; sourceTree = "<group>"; };
-		549A839E2643D09100CB861E /* ThroatPartType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ThroatPartType.swift; sourceTree = "<group>"; };
+		549A839D2643D09100CB861E /* DetectedObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetectedObject.swift; sourceTree = "<group>"; };
+		549A839E2643D09100CB861E /* DetectedObjectType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetectedObjectType.swift; sourceTree = "<group>"; };
 		549A83A32643D0E100CB861E /* VisionService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VisionService.swift; sourceTree = "<group>"; };
-		549A83A42643D0E200CB861E /* MLModelService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MLModelService.swift; sourceTree = "<group>"; };
+		549A83A42643D0E200CB861E /* VisionModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VisionModel.swift; sourceTree = "<group>"; };
 		549A83A72643D11500CB861E /* my_custom_model.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; name = my_custom_model.mlmodel; path = ../../../ML/ML_Model_Env/my_custom_model.mlmodel; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -127,8 +127,9 @@
 		549A83792643CEA200CB861E /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				549A839D2643D09100CB861E /* ThroatPart.swift */,
-				549A839E2643D09100CB861E /* ThroatPartType.swift */,
+				549A83A42643D0E200CB861E /* VisionModel.swift */,
+				549A839D2643D09100CB861E /* DetectedObject.swift */,
+				549A839E2643D09100CB861E /* DetectedObjectType.swift */,
 				549A839A2643D02F00CB861E /* Camera */,
 			);
 			path = Models;
@@ -183,7 +184,6 @@
 		549A83A22643D0D500CB861E /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				549A83A42643D0E200CB861E /* MLModelService.swift */,
 				549A83A32643D0E100CB861E /* VisionService.swift */,
 			);
 			path = Services;
@@ -261,18 +261,18 @@
 			files = (
 				549A83912643CFBF00CB861E /* UITextView+Extensions.swift in Sources */,
 				542D189C2639E02E00C7DBFD /* ObjectDetectionController.swift in Sources */,
-				549A83A62643D0E200CB861E /* MLModelService.swift in Sources */,
+				549A83A62643D0E200CB861E /* VisionModel.swift in Sources */,
 				549A83972643CFBF00CB861E /* UILabel+Extensions.swift in Sources */,
 				549A837B2643CEB600CB861E /* Camera.swift in Sources */,
 				549A83782643CE6A00CB861E /* CameraPreview.swift in Sources */,
-				549A839F2643D09100CB861E /* ThroatPart.swift in Sources */,
+				549A839F2643D09100CB861E /* DetectedObject.swift in Sources */,
 				549A838D2643CFBF00CB861E /* UIViewController+Extensions.swift in Sources */,
 				549A838F2643CFBF00CB861E /* String+Extensions.swift in Sources */,
 				549A83A52643D0E200CB861E /* VisionService.swift in Sources */,
 				549A83A82643D11500CB861E /* my_custom_model.mlmodel in Sources */,
 				542D18982639E02E00C7DBFD /* AppDelegate.swift in Sources */,
 				549A83922643CFBF00CB861E /* UIColor+Extensions.swift in Sources */,
-				549A83A02643D09100CB861E /* ThroatPartType.swift in Sources */,
+				549A83A02643D09100CB861E /* DetectedObjectType.swift in Sources */,
 				549A83992643CFBF00CB861E /* UITextField+Extensions.swift in Sources */,
 				542D189A2639E02E00C7DBFD /* SceneDelegate.swift in Sources */,
 				549A839C2643D04300CB861E /* CameraErrors.swift in Sources */,

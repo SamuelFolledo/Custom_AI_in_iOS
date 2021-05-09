@@ -14,8 +14,8 @@ protocol VisionServiceInputs {
     func updateTrackedItems(trackedItems: [DetectedObjectType])
 }
 
-protocol ThroatPartScannerProtocol {
-    func updateThroatParts(newThroatParts: [ThroatPart])
+protocol ObjectScannerProtocol {
+    func updateDetectedObjects(newDetectedObjects: [DetectedObject])
 }
 
 class VisionService: VisionServiceInputs {
@@ -33,12 +33,12 @@ class VisionService: VisionServiceInputs {
     /// Preview used to draw bounding boxes with detected items
     fileprivate var previewView: CameraPreview!
     fileprivate var trackedItems: [DetectedObjectType] = []
-    fileprivate var delegate: ThroatPartScannerProtocol? //use delegate protocol in the future
+    fileprivate var delegate: ObjectScannerProtocol? //use delegate protocol in the future
     private var isUvulaAvailable: Bool = false
     private var isPharynxAvailable: Bool = false
 
     // MARK: Public
-    init(with preview: CameraPreview, trackedItems: [DetectedObjectType] = [], delegate: ThroatPartScannerProtocol) {
+    init(with preview: CameraPreview, trackedItems: [DetectedObjectType] = [], delegate: ObjectScannerProtocol) {
         self.previewView = preview
         self.trackedItems = trackedItems
         self.delegate = delegate
@@ -76,8 +76,8 @@ extension VisionService {
     }
 
     private func setupVisionModel() {
-        let model = VisionModelLoader.getModel()
-        let request = VNCoreMLRequest(model: model, completionHandler: completionRequestHandler)
+//        let model = VisionModelLoader.getModel()
+        let request = VNCoreMLRequest(model: VisionModel.visionModel, completionHandler: completionRequestHandler)
         request.imageCropAndScaleOption = .scaleFill
         self.requests = [request]
     }
@@ -95,23 +95,23 @@ extension VisionService {
         // remove all previously added masks
         previewView.removeMasks()
         //filter out objects detected with low confidence
-        let detectedObjects = results.filter({ $0.confidence >= Config.confidence })
+        let highConfidenceObjects = results.filter({ $0.confidence >= Config.confidence })
         // CoreGraphics => transforming origin from top left corner to bottom left corner
         let transform = CGAffineTransform(scaleX: 1, y: -1).translatedBy(x: 0, y: -self.previewView.frame.height)
         let translate = CGAffineTransform.identity.scaledBy(x: self.previewView.frame.width, y: self.previewView.frame.height)
-        var throatParts: [ThroatPart] = []
-        for trackedObject in detectedObjects { //loop through each detected objects
-            //get throat part's location
+        var detectedObjects: [DetectedObject] = []
+        for trackedObject in highConfidenceObjects { //loop through each detected objects
+            //get trackedObject's location
             let rectangularLocation = trackedObject.boundingBox.applying(translate).applying(transform)
-            //create a throat part model from the trackedObject
-            guard let newThroatPart = ThroatPart(trackedObject: trackedObject, location: rectangularLocation) else { continue }
-            //loop through each throatParts appended already and make sure to remove throat parts that has low confidence
+            //create a detectedObject model from the trackedObject
+            guard let newDetectedObject = DetectedObject(trackedObject: trackedObject, location: rectangularLocation) else { continue }
+            //loop through each detectedObjects appended already and make sure to remove detectedObjects that has duplicates and lower confidence
             var shouldAppend = true
-            for (index, throatPart) in throatParts.enumerated() {
-                if throatPart.type != newThroatPart.type { continue }
-                if throatPart.location.intersects(newThroatPart.location) { //if throatPart intersects with the newThroatPart in array
-                    if throatPart.confidence < newThroatPart.confidence { //if throatPart has lower confidence... remove throat part
-                        throatParts.remove(at: index)
+            for (index, object) in detectedObjects.enumerated() {
+                if object.type != newDetectedObject.type { continue }
+                if object.location.intersects(newDetectedObject.location) { //if trackedObject intersects with the newDetectedObject in array
+                    if object.confidence < newDetectedObject.confidence { //if newDetectedObject has lower confidence... remove detectedObject
+                        detectedObjects.remove(at: index)
                     } else {
                         shouldAppend = false
                     }
@@ -119,15 +119,15 @@ extension VisionService {
                 }
             }
             if shouldAppend {
-                throatParts.append(newThroatPart)
+                detectedObjects.append(newDetectedObject)
             }
         }
-        print(throatParts.map{$0.type})
+        print(detectedObjects.map{$0.type})
         //draw the bounding boxes
-        for part in throatParts {
+        for part in detectedObjects {
             previewView.drawLayer(in: part.location, color: part.type.color, with: part.confidenceText)
         }
-        delegate?.updateThroatParts(newThroatParts: throatParts)
+        delegate?.updateDetectedObjects(newDetectedObjects: detectedObjects)
     }
 }
 

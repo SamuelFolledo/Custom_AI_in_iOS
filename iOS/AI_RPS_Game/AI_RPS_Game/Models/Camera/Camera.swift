@@ -34,7 +34,7 @@ class Camera: NSObject {
 
 //    private lazy var sequenceHandler = VNSequenceRequestHandler()
 //    private lazy var capturePhotoOutput = AVCapturePhotoOutput()
-    private lazy var dataOutputQueue = DispatchQueue(label: "ThroatDetectionService", qos: .userInitiated, attributes: [], autoreleaseFrequency: .workItem)
+    private lazy var dataOutputQueue = DispatchQueue(label: "DetectedObjectService", qos: .userInitiated, attributes: [], autoreleaseFrequency: .workItem)
     private var captureCompletionBlock: ((UIImage) -> Void)?
     private var preparingCompletionHandler: ((Bool) -> Void)?
     private var snapshotImageOrientation = UIImage.Orientation.upMirrored

@@ -1,5 +1,5 @@
 //
-//  ThroatPart.swift
+//  DetectedObject.swift
 //  AI_RPS_Game
 //
 //  Created by Samuel Folledo on 5/6/21.
@@ -8,13 +8,13 @@
 import UIKit.UIImage
 import Vision.VNObservation
 
-protocol ThroatImage {
+protocol DetectedObjectImage {
     var type: DetectedObjectType { get }
     var image: UIImage! { get }
     var isSelected: Bool { get set }
 }
 
-struct UnknownThroatPart: ThroatImage {
+struct UnknownDetectedObject: DetectedObjectImage {
     var image: UIImage!
     var isSelected: Bool = true
     var type: DetectedObjectType = .unknown
@@ -24,7 +24,7 @@ struct UnknownThroatPart: ThroatImage {
     }
 }
 
-struct ThroatPart: Identifiable, ThroatImage {
+struct DetectedObject: Identifiable, DetectedObjectImage {
     let id = String.randomString(length: 10)
     private(set) var type: DetectedObjectType
     private(set) var confidence: VNConfidence
@@ -34,11 +34,12 @@ struct ThroatPart: Identifiable, ThroatImage {
     var isSelected = true
     
     init?(trackedObject: VNRecognizedObjectObservation, location: CGRect) {
-        guard let label = trackedObject.labels.first?.identifier, let throatPart = DetectedObjectType(rawValue: label) else {
-//            assertionFailure("Unable to retrieve identifier for result: \(trackedObject)")
+        guard let label = trackedObject.labels.first?.identifier,
+              let objectType = DetectedObjectType(rawValue: label) else {
+            print("Unable to retrieve identifier for result: \(trackedObject)")
             return nil
         }
-        self.type = throatPart
+        self.type = objectType
         self.confidence = trackedObject.confidence
         self.confidenceText = trackedObject.formattedConfidenceLabel
         self.location = location
