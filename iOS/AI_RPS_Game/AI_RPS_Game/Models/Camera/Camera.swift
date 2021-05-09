@@ -15,25 +15,16 @@ protocol CameraProtocol {
     func toggleInputs()
 }
 
-//protocol CaptureManagerDelegate: class {
-//    func processCapturedImage(image: UIImage)
-//}
 class Camera: NSObject {
     // MARK: Properties
     private let cameraQueue = DispatchQueue(label: "cameraFramework.camera.session.queue")
     private var captureSession: AVCaptureSession?
-//    private weak var sampleBufferDelegate: AVCaptureVideoDataOutputSampleBufferDelegate?
     private weak var delegate: ObjectDetectionController?
-//    private weak var captureDelegate: AVCapturePhotoCaptureDelegate?
-//    weak var delegate: CaptureManagerDelegate?
     
     // Camera
     private var frontCamera: AVCaptureDevice?
     private var backCamera: AVCaptureDevice?
     private let captureDeviceOutput = AVCapturePhotoOutput()
-
-//    private lazy var sequenceHandler = VNSequenceRequestHandler()
-//    private lazy var capturePhotoOutput = AVCapturePhotoOutput()
     private lazy var dataOutputQueue = DispatchQueue(label: "DetectedObjectService", qos: .userInitiated, attributes: [], autoreleaseFrequency: .workItem)
     private var captureCompletionBlock: ((UIImage) -> Void)?
     private var preparingCompletionHandler: ((Bool) -> Void)?
@@ -48,7 +39,6 @@ class Camera: NSObject {
     }
 
     public init(with delegate: ObjectDetectionController) {
-//        self.sampleBufferDelegate = delegate
         self.delegate = delegate
     }
     
