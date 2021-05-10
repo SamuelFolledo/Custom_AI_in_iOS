@@ -41,6 +41,10 @@ This tutorial will be a YOLO (You Only Look Once) type of machine learning model
 
 4. In Terminal, enter `(ML_Model_Env) ➜  ML_Model_Env $ jupyter notebook` to launch Jupyter Notebook in your browser and then open **Model Creator.ipnyb**
 
+## External Links
+- [IBM Cloud Annotations Introduction](https://cloud.annotations.ai/workshops/object-detection/index.html)
+- [IBM Cloud Annotations Documentation](https://cloud.annotations.ai/docs)
+
 
 ## For questions or opportunities, contact me at:
 - [LinkedIn](https://linkedin.com/in/samuelfolledo)
