@@ -35,7 +35,7 @@ struct DetectedObject: Identifiable, DetectedObjectImage {
     
     init?(trackedObject: VNRecognizedObjectObservation, location: CGRect) {
         guard let label = trackedObject.labels.first?.identifier,
-              let objectType = DetectedObjectType(rawValue: label) else {
+              let objectType = DetectedObjectType(name: label) else {
             print("Unable to retrieve identifier for result: \(trackedObject)")
             return nil
         }

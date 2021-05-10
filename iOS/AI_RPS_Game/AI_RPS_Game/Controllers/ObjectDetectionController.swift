@@ -20,7 +20,7 @@ class ObjectDetectionController: UIViewController {
     private var camera: Camera!
     private var visionService: VisionService!
     private var delayTimer: Timer?
-    private var willDelay: Bool = false
+//    private var willDelay: Bool = false
     
     //MARK: UI Components
     private let captureButton: UIButton = {
@@ -241,37 +241,37 @@ extension ObjectDetectionController: AVCapturePhotoCaptureDelegate {
 extension ObjectDetectionController: ObjectScannerProtocol {
     func updateDetectedObjects(newDetectedObjects: [DetectedObject]) {
         //search for uvula first if we still need more uvula and found uvula
-        if willDelay {
-            print("Wait")
-            return
-        }
-        willDelay = true
+//        if willDelay {
+//            print("Wait")
+//            return
+//        }
+//        willDelay = true
         let scanResult = getScanResult(newDetectedObjects: newDetectedObjects)
         switch scanResult {
         case .success(let detectedObject):
-            print("Successfully found a part \(detectedObject)")
+            print("Successfully found an object \(detectedObject)")
 //            currentDetectedObject = detectedObject
             updateCameraFocusPoint(detectedObject: detectedObject)
 //            camera.takePhoto()
-            delayTimer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(updateDelayTimer), userInfo: nil, repeats: true)
+//            delayTimer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(updateDelayTimer), userInfo: nil, repeats: true)
         case .error(let message):
             print("Error message \(message)")
-            willDelay = false
+//            willDelay = false
         }
     }
     
-    @objc func updateDelayTimer() {
-        print("done waiting")
-//        currentDetectedObject = nil
-        delayTimer?.invalidate()
-        willDelay = false
-    }
+//    @objc func updateDelayTimer() {
+//        print("done waiting")
+////        currentDetectedObject = nil
+//        delayTimer?.invalidate()
+//        willDelay = false
+//    }
     
     //MARK: DetectedObjectScanner Helpers
     
     private func getScanResult(newDetectedObjects: [DetectedObject]) -> ScanResultType {
         guard let detectedObject: DetectedObject = newDetectedObjects.first else {
-            return .error(message: "no part from new detectedObject parts")
+            return .error(message: "getScanResult, no object from new detectedObjects")
         }
         return .success(detectedObject: detectedObject)
     }
