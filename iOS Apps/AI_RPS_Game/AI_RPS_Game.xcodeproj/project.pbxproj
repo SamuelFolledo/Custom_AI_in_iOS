@@ -34,7 +34,7 @@
 		549A83A02643D09100CB861E /* DetectedObjectType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 549A839E2643D09100CB861E /* DetectedObjectType.swift */; };
 		549A83A52643D0E200CB861E /* VisionService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 549A83A32643D0E100CB861E /* VisionService.swift */; };
 		549A83A62643D0E200CB861E /* VisionModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 549A83A42643D0E200CB861E /* VisionModel.swift */; };
-		549A83A82643D11500CB861E /* my_custom_model.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 549A83A72643D11500CB861E /* my_custom_model.mlmodel */; };
+		54C55BA2264945B400AE0D10 /* my_custom_model.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 54C55BA1264945B400AE0D10 /* my_custom_model.mlmodel */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -67,7 +67,7 @@
 		549A839E2643D09100CB861E /* DetectedObjectType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetectedObjectType.swift; sourceTree = "<group>"; };
 		549A83A32643D0E100CB861E /* VisionService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VisionService.swift; sourceTree = "<group>"; };
 		549A83A42643D0E200CB861E /* VisionModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VisionModel.swift; sourceTree = "<group>"; };
-		549A83A72643D11500CB861E /* my_custom_model.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; name = my_custom_model.mlmodel; path = ../../../ML/ML_Model_Env/my_custom_model.mlmodel; sourceTree = "<group>"; };
+		54C55BA1264945B400AE0D10 /* my_custom_model.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; name = my_custom_model.mlmodel; path = ../../../ML/ML_Model_Env/my_custom_model.mlmodel; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -102,7 +102,7 @@
 			children = (
 				542D18972639E02E00C7DBFD /* AppDelegate.swift */,
 				542D18992639E02E00C7DBFD /* SceneDelegate.swift */,
-				549A83A72643D11500CB861E /* my_custom_model.mlmodel */,
+				54C55BA1264945B400AE0D10 /* my_custom_model.mlmodel */,
 				549A83A22643D0D500CB861E /* Services */,
 				549A83A12643D0CE00CB861E /* Controllers */,
 				549A83792643CEA200CB861E /* Models */,
@@ -269,7 +269,7 @@
 				549A838D2643CFBF00CB861E /* UIViewController+Extensions.swift in Sources */,
 				549A838F2643CFBF00CB861E /* String+Extensions.swift in Sources */,
 				549A83A52643D0E200CB861E /* VisionService.swift in Sources */,
-				549A83A82643D11500CB861E /* my_custom_model.mlmodel in Sources */,
+				54C55BA2264945B400AE0D10 /* my_custom_model.mlmodel in Sources */,
 				542D18982639E02E00C7DBFD /* AppDelegate.swift in Sources */,
 				549A83922643CFBF00CB861E /* UIColor+Extensions.swift in Sources */,
 				549A83A02643D09100CB861E /* DetectedObjectType.swift in Sources */,
