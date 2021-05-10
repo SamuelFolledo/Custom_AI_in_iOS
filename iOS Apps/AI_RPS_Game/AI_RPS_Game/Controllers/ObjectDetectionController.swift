@@ -20,6 +20,12 @@ class ObjectDetectionController: UIViewController {
     private var camera: Camera!
     private var visionService: VisionService!
     private var delayTimer: Timer?
+    private var p1Score: Int = 0 {
+        didSet { p1Label.text = "P1: \(p1Score)" }
+    }
+    private var p2Score: Int = 0 {
+        didSet { p2Label.text = "P2: \(p2Score)" }
+    }
     
     //MARK: UI Components
     private let captureButton: UIButton = {
@@ -40,12 +46,38 @@ class ObjectDetectionController: UIViewController {
         slider.addTarget(self, action: #selector(brightnessLevelDidChange(_:)), for: .valueChanged)
         return slider
     }()
-    private lazy var instructionLabel: UILabel = {
+    private lazy var titleLabel: UILabel = {
         let label = UILabel()
-        label.text = ""
+        label.text = "Rock Paper Scissors"
         label.textAlignment = .center
         label.font = .font(size: 32, weight: .bold, design: .default)
         label.numberOfLines = 2
+        label.textColor = .white
+        label.backgroundColor = UIColor.gray.withAlphaComponent(0.5)
+        label.layer.cornerRadius = 5
+        label.layer.borderWidth = 2
+        label.layer.borderColor = UIColor.white.withAlphaComponent(0.2).cgColor
+        return label
+    }()
+    private lazy var p1Label: UILabel = {
+        let label = UILabel()
+        label.text = "P1: \(p1Score)"
+        label.textAlignment = .center
+        label.font = .font(size: 24, weight: .medium, design: .default)
+        label.numberOfLines = 1
+        label.textColor = .white
+        label.backgroundColor = UIColor.gray.withAlphaComponent(0.5)
+        label.layer.cornerRadius = 5
+        label.layer.borderWidth = 2
+        label.layer.borderColor = UIColor.white.withAlphaComponent(0.2).cgColor
+        return label
+    }()
+    private lazy var p2Label: UILabel = {
+        let label = UILabel()
+        label.text = "P2: \(p2Score)"
+        label.textAlignment = .center
+        label.font = .font(size: 24, weight: .medium, design: .default)
+        label.numberOfLines = 1
         label.textColor = .white
         label.backgroundColor = UIColor.gray.withAlphaComponent(0.5)
         label.layer.cornerRadius = 5
@@ -96,7 +128,34 @@ class ObjectDetectionController: UIViewController {
     //MARK: - Private Methods
     fileprivate func setupViews() {
         setupBackground()
-        view.addSubview(instructionLabel)
+        constraintCameraPreview()
+        //instruction label
+        previewView.addSubview(titleLabel)
+        titleLabel.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            titleLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            titleLabel.topAnchor.constraint(equalTo: view.topAnchor, constant: 10),
+            titleLabel.widthAnchor.constraint(equalToConstant: view.frame.width - 16),
+            titleLabel.heightAnchor.constraint(equalToConstant: 50),
+        ])
+        //p1 label
+        view.addSubview(p1Label)
+        p1Label.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            p1Label.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 16),
+            p1Label.leftAnchor.constraint(equalTo: titleLabel.leftAnchor, constant: 0),
+            p1Label.widthAnchor.constraint(equalToConstant: 100),
+            p1Label.heightAnchor.constraint(equalToConstant: 40),
+        ])
+        //p2 label
+        view.addSubview(p2Label)
+        p2Label.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            p2Label.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 16),
+            p2Label.rightAnchor.constraint(equalTo: titleLabel.rightAnchor, constant: 0),
+            p2Label.widthAnchor.constraint(equalToConstant: 100),
+            p2Label.heightAnchor.constraint(equalToConstant: 40),
+        ])
     }
     
     fileprivate func setupBackground() {
@@ -141,7 +200,7 @@ extension ObjectDetectionController {
     func capturePhotos() {
         enableCaptureButton(false)
         numberOfPhotosToTake = 16
-        instructionLabel.text = "Hold the phone still"
+//        titleLabel.text = "Hold the phone still"
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             for i in 0 ..< self.numberOfPhotosToTake {
                 print("Taking manual photo #", i+1)
@@ -161,7 +220,6 @@ extension ObjectDetectionController {
 private extension ObjectDetectionController {
     func configureVision() {
         //must reinitialize or camera preview will be frozen
-        constraintCameraPreview()
         visionService = VisionService(with: previewView, trackedItems: trackedItems, delegate: self)
     }
     
@@ -170,11 +228,12 @@ private extension ObjectDetectionController {
         previewView.removeMasks()
         view.addSubview(previewView)
         previewView.translatesAutoresizingMaskIntoConstraints = false
-        let horizontalConstraint = previewView.centerXAnchor.constraint(equalTo: view.centerXAnchor)
-        let verticalConstraint = previewView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
-        let widthConstraint = previewView.widthAnchor.constraint(equalToConstant: view.frame.width)
-        let heightConstraint = previewView.heightAnchor.constraint(equalToConstant: view.frame.height)
-        NSLayoutConstraint.activate([horizontalConstraint, verticalConstraint, widthConstraint, heightConstraint])
+        NSLayoutConstraint.activate([
+            previewView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            previewView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            previewView.widthAnchor.constraint(equalToConstant: view.frame.width),
+            previewView.heightAnchor.constraint(equalToConstant: view.frame.height),
+        ])
     }
     
     func configureCamera() {
