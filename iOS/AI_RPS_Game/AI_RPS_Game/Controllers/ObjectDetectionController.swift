@@ -15,15 +15,12 @@ class ObjectDetectionController: UIViewController {
     // MARK: Properties
     private let defaultPhotosToTake: Int = 16
     private var numberOfPhotosToTake: Int = 16
-    private let defaults = UserDefaults.standard
     private let cameraShutterSoundID: SystemSoundID = 1108 // use 1157 if 1108 is unsavory
     private var trackedItems: [DetectedObjectType] = DetectedObjectType.allObjectTypes
     private var camera: Camera!
     private var visionService: VisionService!
-    private let screenArea: CGFloat = UIScreen.main.bounds.width * UIScreen.main.bounds.height
     private var delayTimer: Timer?
     private var willDelay: Bool = false
-    private var mainQueue = OperationQueue.main
     
     //MARK: UI Components
     private let captureButton: UIButton = {
@@ -209,9 +206,7 @@ extension ObjectDetectionController: AVCaptureVideoDataOutputSampleBufferDelegat
             }
             return
         }
-        guard let pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) else {
-            return
-        }
+        guard let pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) else { return }
         var requestOptions: [VNImageOption: Any] = [:]
         if let cameraIntrensicData = CMGetAttachment(sampleBuffer, key: kCMSampleBufferAttachmentKey_CameraIntrinsicMatrix, attachmentModeOut: nil) {
             requestOptions = [.cameraIntrinsics: cameraIntrensicData]

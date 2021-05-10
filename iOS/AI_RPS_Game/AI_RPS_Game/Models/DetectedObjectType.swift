@@ -15,7 +15,8 @@ enum DetectedObjectType: String {
         case .rock:
             return .yellow
         case .paper:
-            return UIColor(r: 203, g: 195, b: 227, a: 1) //light purple
+//            return UIColor(r: 203, g: 195, b: 227, a: 1) //light purple
+            return .green
         case .scissor:
             return .cyan
         case .unknown:

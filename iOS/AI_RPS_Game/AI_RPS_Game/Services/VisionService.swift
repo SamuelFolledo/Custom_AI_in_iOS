@@ -42,7 +42,7 @@ class VisionService: VisionServiceInputs {
         self.previewView = preview
         self.trackedItems = trackedItems
         self.delegate = delegate
-        setupVision()
+        setupVisionModel()
     }
 
     // MARK: Inputs
@@ -67,13 +67,6 @@ class VisionService: VisionServiceInputs {
 
 // MARK: - Vision
 extension VisionService {
-    
-    func setupVision() {
-        VisionModelLoader.modelDidUpdate = {[weak self] _ in
-            self?.setupVision()
-        }
-        setupVisionModel()
-    }
 
     private func setupVisionModel() {
 //        let model = VisionModelLoader.getModel()
@@ -83,9 +76,9 @@ extension VisionService {
     }
 
     func completionRequestHandler(request: VNRequest, error: Error?) {
-        guard let observations = request.results as? [VNRecognizedObjectObservation], !observations.isEmpty else {
-            return
-        }
+        guard let observations = request.results as? [VNRecognizedObjectObservation],
+              !observations.isEmpty
+        else { return }
         DispatchQueue.main.async {
             self.drawVisionRequestResults(results: observations)
         }
