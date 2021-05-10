@@ -240,50 +240,16 @@ extension ObjectDetectionController: AVCapturePhotoCaptureDelegate {
 //MARK: Pharynx Guide
 extension ObjectDetectionController: ObjectScannerProtocol {
     func updateDetectedObjects(newDetectedObjects: [DetectedObject]) {
-        //search for uvula first if we still need more uvula and found uvula
-//        if willDelay {
-//            print("Wait")
-//            return
-//        }
-//        willDelay = true
-        let scanResult = getScanResult(newDetectedObjects: newDetectedObjects)
-        switch scanResult {
-        case .success(let detectedObject):
-            print("Successfully found an object \(detectedObject)")
-//            currentDetectedObject = detectedObject
-            updateCameraFocusPoint(detectedObject: detectedObject)
-//            camera.takePhoto()
-//            delayTimer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(updateDelayTimer), userInfo: nil, repeats: true)
-        case .error(let message):
-            print("Error message \(message)")
-//            willDelay = false
-        }
+        guard let firstObject = newDetectedObjects.first else { return }
+        updateCameraFocusPoint(detectedObject: firstObject)
+//        camera.takePhoto()
     }
-    
-//    @objc func updateDelayTimer() {
-//        print("done waiting")
-////        currentDetectedObject = nil
-//        delayTimer?.invalidate()
-//        willDelay = false
-//    }
     
     //MARK: DetectedObjectScanner Helpers
-    
-    private func getScanResult(newDetectedObjects: [DetectedObject]) -> ScanResultType {
-        guard let detectedObject: DetectedObject = newDetectedObjects.first else {
-            return .error(message: "getScanResult, no object from new detectedObjects")
-        }
-        return .success(detectedObject: detectedObject)
-    }
     
     ///updates the camera's focus point at the detectedObject's mid point location
     private func updateCameraFocusPoint(detectedObject: DetectedObject) {
         let midPoint = CGPoint(x: detectedObject.location.midX, y: detectedObject.location.midY)
         camera.updateCameraFocusPoint(midPoint: midPoint)
     }
-}
-
-enum ScanResultType {
-    case success(detectedObject: DetectedObject),
-         error(message: String)
 }
