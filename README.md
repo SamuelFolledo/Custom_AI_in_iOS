@@ -28,9 +28,10 @@ This tutorial will be a YOLO (You Only Look Once) type of machine learning model
 <img src="https://github.com/SamuelFolledo/Custom_AI_in_iOS/blob/master/static/images/python-env-activated.png?raw=true" width="400">
 
 7. Install these libraries and its dependencies by running:
-    - `$ pip install turicreate`
-    - `$ pip install jupyter`
-8. In Terminal, enter `$ jupyter notebook` to launch JupyterNotebook in your browser and then open **Model Creator.ipnyb**
+    - `(ML_Model_Env) ➜  ML_Model_Env $ pip install turicreate`
+    - `(ML_Model_Env) ➜  ML_Model_Env $ pip install jupyter`
+8. In Terminal, enter `(ML_Model_Env) ➜  ML_Model_Env $ jupyter notebook` to launch Jupyter Notebook in your browser and then open **Model Creator.ipnyb**
+9. Once you are done, enter in Terminal `(ML_Model_Env) ➜  ML_Model_Env $ deactivate` to clean state and remove all installed packages
 
 ## How to Update Machine Learning Model
 1. With this repo downloaded, open Terminal and change directory to the project's directory
@@ -38,7 +39,7 @@ This tutorial will be a YOLO (You Only Look Once) type of machine learning model
 3. In Terminal, enter `$ source bin/activate` to activate Python environment. It should look like below
 <img src="https://github.com/SamuelFolledo/Custom_AI_in_iOS/blob/master/static/images/python-env-activated.png?raw=true" width="400">
 
-4. In Terminal, enter `jupyter notebook` to launch JupyterNotebook in your browser and then open **Model Creator.ipnyb**
+4. In Terminal, enter `(ML_Model_Env) ➜  ML_Model_Env $ jupyter notebook` to launch Jupyter Notebook in your browser and then open **Model Creator.ipnyb**
 
 
 ## For questions or opportunities, contact me at:
