@@ -20,7 +20,6 @@ class ObjectDetectionController: UIViewController {
     private var camera: Camera!
     private var visionService: VisionService!
     private var delayTimer: Timer?
-//    private var willDelay: Bool = false
     
     //MARK: UI Components
     private let captureButton: UIButton = {
@@ -102,7 +101,6 @@ class ObjectDetectionController: UIViewController {
     
     fileprivate func setupBackground() {
         view.backgroundColor = .systemBackground
-//        coordinator.hideNavigationBar()
     }
     
     private func enableCaptureButton(_ enable: Bool) {
@@ -141,11 +139,9 @@ extension ObjectDetectionController {
     }
     
     func capturePhotos() {
-//        detectedObject.isManuallyCaptured = true
         enableCaptureButton(false)
         numberOfPhotosToTake = 16
         instructionLabel.text = "Hold the phone still"
-//        startActivityIndicator(type: .ballGridPulse)
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             for i in 0 ..< self.numberOfPhotosToTake {
                 print("Taking manual photo #", i+1)
@@ -228,7 +224,7 @@ extension ObjectDetectionController: AVCapturePhotoCaptureDelegate {
             //if no error, then get the image and append to detectedObjectImages
             let dataProvider = CGDataProvider(data: dataImage as CFData)
             let cgImageRef: CGImage! = CGImage(jpegDataProviderSource: dataProvider!, decode: nil, shouldInterpolate: true, intent: .defaultIntent)
-            let imageOrientation = UIImage.Orientation.up
+            let imageOrientation: UIImage.Orientation = .up
             let image = UIImage(cgImage: cgImageRef, scale: 1.0, orientation: imageOrientation)
             print("Got the image output \(image)")
         } else {
