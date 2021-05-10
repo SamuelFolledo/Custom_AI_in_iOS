@@ -15,17 +15,30 @@ This tutorial will be a YOLO (You Only Look Once) type of machine learning model
 - **Xcode** - best IDE for iOS development
 - **Libraries** - CoreML, UIKit
 
+## Initial Setup for ML
+**Note:** Only follow these instructions once. For updating or reopening, refer to the instructions under *How to Update Machine Learning Model*
+1. With this repo downloaded, open Terminal and change directory to the project's directory
+2. In Terminal, enter `$ cd ML`
+3. If needed, install Python's [virtualenv](https://docs.python.org/3/tutorial/venv.html) to have an isolated Python environment.
+    `$ pip install virtualenv`
+    - *For a cheat sheet for virtualenv, click [here](https://zetcode.com/python/venv/)*
+4. In Terminal, enter `$ python -m venv ML_Model_Env` to create a Python virtual environment on the ML_Model_Env
+5. In Terminal, enter `$ cd ML_Model_Env` to go inside that directory
+6. In Terminal, enter `$ source bin/activate` to activate Python environment. It should look like below
+<img src="https://github.com/SamuelFolledo/Custom_AI_in_iOS/blob/master/static/images/python-env-activated.png?raw=true" width="400">
+
+7. Install these libraries and its dependencies by running:
+    - `$ pip install turicreate`
+    - `$ pip install jupyter`
+8. In Terminal, enter `$ jupyter notebook` to launch JupyterNotebook in your browser and then open **Model Creator.ipnyb**
+
 ## How to Update Machine Learning Model
 1. With this repo downloaded, open Terminal and change directory to the project's directory
-2. In Terminal, enter `cd ML/ML_Model_Env` to go to ML_Model_Env directory
-3. If needed, install Python's [virtualenv](https://docs.python.org/3/tutorial/venv.html) to have an isolated Python environment
-    `pip install virtualenv`
-4. In Terminal, enter `source bin/activate` to activate Python environment. It should look like below
+2. In Terminal, enter `$ cd ML/ML_Model_Env` to go to ML_Model_Env directory
+3. In Terminal, enter `$ source bin/activate` to activate Python environment. It should look like below
 <img src="https://github.com/SamuelFolledo/Custom_AI_in_iOS/blob/master/static/images/python-env-activated.png?raw=true" width="400">
-    - Make sure these libraries and its dependencies are installed
-    
 
-5. In Terminal, enter `jupyter notebook` to launch JupyterNotebook in your browser and then open **Model Creator.ipnyb**
+4. In Terminal, enter `jupyter notebook` to launch JupyterNotebook in your browser and then open **Model Creator.ipnyb**
 
 
 ## For questions or opportunities, contact me at:
