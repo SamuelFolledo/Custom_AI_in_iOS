@@ -10,9 +10,23 @@ This tutorial will be a YOLO (You Only Look Once) type of machine learning model
 - **[IBM Cloud Annotation](https://cloud.annotations.ai/)** - for labeling our dataset
 - **Jupyter Notebook** - run our Python codes as well as creating, training, and saving our machine learning model
 - **Libraries** - TuriCreate, Pandas
+
 ### iOS Development Tools
 - **Xcode** - best IDE for iOS development
 - **Libraries** - CoreML, UIKit
+
+## How to Update Machine Learning Model
+1. With this repo downloaded, open Terminal and change directory to the project's directory
+2. In Terminal, enter `cd ML/ML_Model_Env` to go to ML_Model_Env directory
+3. If needed, install Python's [virtualenv](https://docs.python.org/3/tutorial/venv.html) to have an isolated Python environment
+    `pip install virtualenv`
+4. In Terminal, enter `source bin/activate` to activate Python environment. It should look like below
+<img src="https://github.com/SamuelFolledo/Custom_AI_in_iOS/blob/master/static/images/python-env-activated.png?raw=true" width="400">
+    - Make sure these libraries and its dependencies are installed
+    
+
+5. In Terminal, enter `jupyter notebook` to launch JupyterNotebook in your browser and then open **Model Creator.ipnyb**
+
 
 ## For questions or opportunities, contact me at:
 - [LinkedIn](https://linkedin.com/in/samuelfolledo)
