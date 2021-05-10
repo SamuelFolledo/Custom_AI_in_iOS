@@ -70,7 +70,19 @@ extension VisionService {
 
     private func setupVisionModel() {
 //        let model = VisionModelLoader.getModel()
-        let request = VNCoreMLRequest(model: VisionModel.visionModel, completionHandler: completionRequestHandler)
+        //Perform an image analysis request that using our ml model to process images.
+        let request = VNCoreMLRequest(model: VisionModel.visionModel) { request, error in
+            if let error = error {
+                print("Error setting up vision model \(error.localizedDescription)")
+                return
+            }
+            guard let observations = request.results as? [VNRecognizedObjectObservation],
+                  !observations.isEmpty
+            else { return }
+            DispatchQueue.main.async {
+                self.drawVisionRequestResults(results: observations)
+            }
+        }
         request.imageCropAndScaleOption = .scaleFill
         self.requests = [request]
     }
@@ -117,8 +129,8 @@ extension VisionService {
         }
         print(detectedObjects.map{$0.type})
         //draw the bounding boxes
-        for part in detectedObjects {
-            previewView.drawLayer(in: part.location, color: part.type.color, with: part.confidenceText)
+        for object in detectedObjects {
+            previewView.drawLayer(in: object.location, color: object.type.color, with: object.confidenceText)
         }
         delegate?.updateDetectedObjects(newDetectedObjects: detectedObjects)
     }
