@@ -48,7 +48,7 @@ class ObjectDetectionController: UIViewController {
     }()
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
-        label.text = "Rock Paper Scissors"
+        label.text = "RPS Scorer"
         label.textAlignment = .center
         label.font = .font(size: 32, weight: .bold, design: .default)
         label.numberOfLines = 2
