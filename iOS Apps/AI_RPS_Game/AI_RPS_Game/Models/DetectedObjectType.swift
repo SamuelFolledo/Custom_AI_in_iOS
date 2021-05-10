@@ -10,34 +10,39 @@ import Vision.VNObservation
 
 enum DetectedObjectType {
     case macMini, clock, pinkStickyNote, yellowStickyNote, scissor, rock, paper, pen, remote, applePencil, keyboard, macbook, handSanitizer, sprayBottle, unknown
+    
+    ///Color for previewView's bounding box
     var color: UIColor {
         switch self {
         case .rock:
             return .yellow
         case .paper:
-//            return UIColor(r: 203, g: 195, b: 227, a: 1) //light purple
             return .green
         case .scissor:
             return .cyan
         case .unknown:
             return .red
-        default:
+        default: //the rest of the object type will have a white border
             return .white
         }
     }
     
-    static var allObjectTypes = [
-        DetectedObjectType.macMini,
-        DetectedObjectType.clock,
-        DetectedObjectType.pinkStickyNote,
-        DetectedObjectType.yellowStickyNote,
-        DetectedObjectType.scissor,
-        DetectedObjectType.rock,
-        DetectedObjectType.paper,
-        DetectedObjectType.pen,
-        DetectedObjectType.remote,
-        DetectedObjectType.applePencil,
-        DetectedObjectType.unknown,
+    static var allObjectTypes: [DetectedObjectType] = [
+        .macMini,
+        .clock,
+        .pinkStickyNote,
+        .yellowStickyNote,
+        .scissor,
+        .rock,
+        .paper,
+        .pen,
+        .remote,
+        .applePencil,
+        .keyboard,
+        .macbook,
+        .handSanitizer,
+        .sprayBottle,
+        .unknown,
     ]
     
     init(trackedObject: VNRecognizedObjectObservation) {
@@ -122,6 +127,7 @@ extension DetectedObjectType {
         }
     }
 
+    ///checks the first item should be tracked or not
     static func shouldTrack(items: [DetectedObjectType], for classifier: String) -> Bool {
         return items.first(where: { $0.supportedValues.contains(classifier)} ) != nil
     }
