@@ -49,4 +49,14 @@ struct DetectedObject: Identifiable, DetectedObjectImage {
     mutating func updateImage(image: UIImage) {
         self.image = image
     }
+    
+    func intersectsWith(anotherObject: DetectedObject) -> Bool {
+        if !location.intersects(anotherObject.location) { //if it does not intersects...
+            return false
+        }
+        if abs(location.minX - anotherObject.location.minX) > 100 { //if their location is close, it may be the same object
+            return false
+        }
+        return true
+    }
 }
