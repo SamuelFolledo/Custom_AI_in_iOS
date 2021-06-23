@@ -32,6 +32,7 @@ struct DetectedObject: Identifiable, DetectedObjectImage {
     private(set) var location: CGRect
     private(set) var image: UIImage!
     var isSelected = true
+    var isP1: Bool?
     
     init?(trackedObject: VNRecognizedObjectObservation, location: CGRect) {
         guard let label = trackedObject.labels.first?.identifier,
