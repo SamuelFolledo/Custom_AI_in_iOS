@@ -13,6 +13,10 @@ import Vision
 class ObjectDetectionController: UIViewController {
     
     // MARK: Properties
+    private var currentP1Move: DetectedObject?
+    private var currentP2Move: DetectedObject?
+    private let maxScore: Int = 5
+    private var currentRound: Int = 0
     private let defaultPhotosToTake: Int = 16
     private var numberOfPhotosToTake: Int = 16
     private let cameraShutterSoundID: SystemSoundID = 1108 // use 1157 if 1108 is unsavory
@@ -20,6 +24,7 @@ class ObjectDetectionController: UIViewController {
     private var camera: Camera!
     private var visionService: VisionService!
     private var delayTimer: Timer?
+    private var willDelay: Bool = false
     private var p1Score: Int = 0 {
         didSet { p1Label.text = "P1: \(p1Score)" }
     }
