@@ -307,4 +307,7 @@ extension ObjectDetectionController: ObjectScannerProtocol {
         let midPoint = CGPoint(x: detectedObject.location.midX, y: detectedObject.location.midY)
         camera.updateCameraFocusPoint(midPoint: midPoint)
     }
+    private enum RoundResult {
+        case win, lose, draw
+    }
 }
