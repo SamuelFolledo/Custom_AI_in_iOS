@@ -205,7 +205,6 @@ extension ObjectDetectionController {
     func capturePhotos() {
         enableCaptureButton(false)
         numberOfPhotosToTake = 16
-//        titleLabel.text = "Hold the phone still"
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
             for i in 0 ..< self.numberOfPhotosToTake {
                 print("Taking manual photo #", i+1)
@@ -300,8 +299,9 @@ extension ObjectDetectionController: AVCapturePhotoCaptureDelegate {
 //MARK: Pharynx Guide
 extension ObjectDetectionController: ObjectScannerProtocol {
     func updateDetectedObjects(newDetectedObjects: [DetectedObject]) {
-        guard let firstObject = newDetectedObjects.first else { return }
-        updateCameraFocusPoint(detectedObject: firstObject)
+        //get first object and focus
+//        guard let firstObject = newDetectedObjects.first else { return }
+//        updateCameraFocusPoint(detectedObject: firstObject)
 //        camera.takePhoto()
     }
     
