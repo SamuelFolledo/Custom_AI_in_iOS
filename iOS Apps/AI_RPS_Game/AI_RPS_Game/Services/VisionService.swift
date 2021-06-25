@@ -99,8 +99,19 @@ extension VisionService {
     func drawVisionRequestResults(results: [VNRecognizedObjectObservation]) {
         // remove all previously added masks
         previewView.removeMasks()
+        //filter (unwanted duplicates, low confidence) objects
+        let detectedObjects: [DetectedObject] = getCleanedDetectedObjects(results)
+        //draw the bounding boxes
+        for object in detectedObjects {
+            previewView.drawLayer(in: object.location, color: object.type.color, with: object.confidenceText)
+        }
+        delegate?.updateDetectedObjects(newDetectedObjects: detectedObjects)
+    }
+    
+    ///filter (unwanted duplicates, low confidence) objects
+    func getCleanedDetectedObjects(_ recognizedObjects: [VNRecognizedObjectObservation]) -> [DetectedObject] {
         //filter out objects detected with low confidence
-        let highConfidenceObjects = results.filter({ $0.confidence >= Config.confidence })
+        let highConfidenceObjects = recognizedObjects.filter({ $0.confidence >= Config.confidence })
         // CoreGraphics => transforming origin from top left corner to bottom left corner
         let transform = CGAffineTransform(scaleX: 1, y: -1).translatedBy(x: 0, y: -self.previewView.frame.height)
         let translate = CGAffineTransform.identity.scaledBy(x: self.previewView.frame.width, y: self.previewView.frame.height)
@@ -110,11 +121,12 @@ extension VisionService {
             let rectangularLocation = trackedObject.boundingBox.applying(translate).applying(transform)
             //create a detectedObject model from the trackedObject
             guard let newDetectedObject = DetectedObject(trackedObject: trackedObject, location: rectangularLocation) else { continue }
+//            print("Location: \(rectangularLocation) of \(newDetectedObject.confidenceText)")
             //loop through each detectedObjects appended already and make sure to remove detectedObjects that has duplicates and lower confidence
             var shouldAppend = true
-            for (index, object) in detectedObjects.enumerated() {
-                if object.type != newDetectedObject.type { continue }
-                if object.location.intersects(newDetectedObject.location) { //if trackedObject intersects with the newDetectedObject in array
+            for (index, object) in detectedObjects.enumerated() { //loop through each detected objects and make sure there are no duplicates
+//                if object.type != newDetectedObject.type { continue }
+                if newDetectedObject.intersectsWith(anotherObject: object) { //if trackedObject intersects with the newDetectedObject in array
                     if object.confidence < newDetectedObject.confidence { //if newDetectedObject has lower confidence... remove detectedObject
                         detectedObjects.remove(at: index)
                     } else {
