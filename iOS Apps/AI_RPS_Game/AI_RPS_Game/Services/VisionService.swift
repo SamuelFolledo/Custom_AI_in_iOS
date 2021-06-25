@@ -24,7 +24,7 @@ class VisionService: VisionServiceInputs {
     enum Config {
         /// Confidence in % expressed from 0 - 1 which will be used
         /// to draw bounding boxes on the images in the preview
-        static let confidence: VNConfidence = 0.3
+        static let confidence: VNConfidence = 0.1
     }
     
     // MARK: Private
