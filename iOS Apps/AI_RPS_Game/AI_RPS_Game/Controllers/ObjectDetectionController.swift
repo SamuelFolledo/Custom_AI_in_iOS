@@ -303,6 +303,32 @@ extension ObjectDetectionController: ObjectScannerProtocol {
 //        guard let firstObject = newDetectedObjects.first else { return }
 //        updateCameraFocusPoint(detectedObject: firstObject)
 //        camera.takePhoto()
+        //get the objects and assign p1 or p2
+        if willDelay {
+            print("Wait")
+            return
+        }
+        if newDetectedObjects.count < 2 {
+//            print("Theres 0-1 detected results")
+        } else if newDetectedObjects.count > 2 {
+            print("Theres more than 2 detected results")
+        } else { //there's exactly 2 newDetectedObjects
+            //add a delay
+            let delayLength = 1.8
+            willDelay = true
+            delayTimer = Timer.scheduledTimer(timeInterval: TimeInterval(delayLength), target: self, selector: #selector(updateDelayTimer), userInfo: nil, repeats: true)
+            //assign property for detectedObject.isP1
+            let separatedObjects = separateDetectedObjects(newDetectedObjects: newDetectedObjects)
+            //get result from p1 and p2 move
+            let p1RoundResult = getP1RoundResults(detectedObjects: separatedObjects)
+            updateRoundWith(p1RoundResult: p1RoundResult)
+            print("round result p1 = \(p1RoundResult)\tScore = \(p1Score):\(p2Score)")
+        }
+    }
+    private func prepareNextRound() {
+        currentRound += 1
+        currentP1Move = nil
+        currentP2Move = nil
     }
     
     //MARK: DetectedObjectScanner Helpers
