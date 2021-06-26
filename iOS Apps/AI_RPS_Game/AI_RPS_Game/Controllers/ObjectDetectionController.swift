@@ -315,4 +315,18 @@ extension ObjectDetectionController: ObjectScannerProtocol {
     private enum RoundResult {
         case win, lose, draw
     }
+    private enum AnnouncementType {
+        case p1WonGame, p2WonGame, p1WonRound, p2WonRound, tieRound
+        var text: String {
+            get {
+                switch self {
+                case .p1WonGame: return "Player 1 won the game"
+                case .p2WonGame: return "Player 2 won the game"
+                case .p1WonRound: return "Player 1 plus 1"
+                case .p2WonRound: return "Player 2 plus 1"
+                case .tieRound: return "Tied"
+                }
+            }
+        }
+    }
 }
