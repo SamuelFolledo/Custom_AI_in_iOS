@@ -325,6 +325,43 @@ extension ObjectDetectionController: ObjectScannerProtocol {
             print("round result p1 = \(p1RoundResult)\tScore = \(p1Score):\(p2Score)")
         }
     }
+    
+    private func updateRoundWith(p1RoundResult: RoundResult) {
+        switch p1RoundResult {
+        case .draw:
+            activateSpeech(type: .tieRound)
+            prepareNextRound()
+        case .lose: //if p1 loses the round
+            p2Score += 1
+            if p2Score == maxScore {
+                assignP1AsWinner(false)
+            } else {
+                activateSpeech(type: .p2WonRound)
+                prepareNextRound()
+            }
+        case .win: //if p2 wins the round
+            p1Score += 1
+            if p1Score == maxScore {
+                assignP1AsWinner(true)
+            } else {
+                activateSpeech(type: .p1WonRound)
+                prepareNextRound()
+            }
+        }
+    }
+    
+    private func assignP1AsWinner(_ didP1Win: Bool) {
+        delayTimer?.invalidate()
+        willDelay = true
+        if didP1Win {
+            titleLabel.text = "P1 win!"
+            activateSpeech(type: .p1WonGame)
+        } else {
+            titleLabel.text = "P2 win!"
+            activateSpeech(type: .p2WonGame)
+        }
+    }
+    
     private func prepareNextRound() {
         currentRound += 1
         currentP1Move = nil
@@ -338,9 +375,87 @@ extension ObjectDetectionController: ObjectScannerProtocol {
         let midPoint = CGPoint(x: detectedObject.location.midX, y: detectedObject.location.midY)
         camera.updateCameraFocusPoint(midPoint: midPoint)
     }
+    
+    private func separateDetectedObjects(newDetectedObjects: [DetectedObject]) -> [DetectedObject] {
+        var resultDetectedObjects = newDetectedObjects
+//        if newDetectedObjects.count < 2 {
+//            return resultDetectedObjects
+//        }
+        //compare locations
+        for (index, object) in newDetectedObjects.enumerated() where index != newDetectedObjects.count - 1 { //loop through each object excluding the last element in the array
+            for i in index+1 ..< newDetectedObjects.count { //compare once with other objects in the array that is located elsewhere
+//                for i in index..<newDetectedObjects.count where object.type != newDetectedObjects[i].type { //compare once with other objects in the array where not the same type of object
+                let otherObject = newDetectedObjects[i]
+                if object.location.minX == newDetectedObjects[i].location.minX { //if located at the same place, move to the next object
+                    print("WHUT???? Detected same object???")
+                    continue
+                } else if object.location.minX > otherObject.location.minX { //if object is on the right side of otherObject
+//                    print("RIGHT: Object \(object.confidenceText) at \(object.location.minX) - \(object.location) OF \(otherObject.confidenceText) at \(otherObject.location.minX) - \(otherObject.location)")
+                    currentP1Move = otherObject
+                    currentP2Move = object
+                    resultDetectedObjects[index].isP1 = false
+                    resultDetectedObjects[i].isP1 = true
+                } else {
+//                    print("LEFT: Object \(object.confidenceText) at \(object.location.minX) OF \(otherObject.confidenceText) at \(otherObject.location.minX)")
+                    currentP1Move = object
+                    currentP2Move = otherObject
+                    resultDetectedObjects[index].isP1 = true
+                    resultDetectedObjects[i].isP1 = false
+                }
+            }
+        }
+        //update score
+//        print("OBJECTS \(resultDetectedObjects)")
+        return resultDetectedObjects
+    }
+    
     private enum RoundResult {
         case win, lose, draw
     }
+    
+    private func getP1RoundResults(detectedObjects: [DetectedObject]) -> RoundResult {
+        if detectedObjects.count != 2 {
+            print("WARNING: detectedObjects have a count \(detectedObjects.count), while expecting 2 only")
+            return .draw
+        }
+        let firstMove = detectedObjects[0]
+        let secondMove = detectedObjects[1]
+        let p1Type: DetectedObjectType
+        let p2Type: DetectedObjectType
+        if let isFirstPlayer1 = firstMove.isP1, isFirstPlayer1 { //if first move is p1
+            p1Type = firstMove.type
+            p2Type = secondMove.type
+        } else {
+            p1Type = secondMove.type
+            p2Type = firstMove.type
+        }
+        if p1Type == p2Type {
+            return .draw
+        }
+        if (p1Type == .paper && p2Type == .scissor) || (p1Type == .rock && p2Type == .paper) || (p1Type == .scissor && p2Type == .rock) {
+//            p2Score += 1
+//            if p2Score == maxScore {
+//                return .loseGame
+//            }
+            return .lose
+        } else if (p1Type == .rock && p2Type == .scissor) || (p1Type == .scissor && p2Type == .paper) || (p1Type == .paper && p2Type == .rock) {
+//            p1Score += 1
+//            if p1Score == maxScore {
+//                return .winGame
+//            }
+            return .win
+        }
+        return .draw
+    }
+    
+    @objc func updateDelayTimer() {
+        print("done waiting")
+        //reset round
+        print("next round")
+        delayTimer?.invalidate()
+        willDelay = false
+    }
+    
     private enum AnnouncementType {
         case p1WonGame, p2WonGame, p1WonRound, p2WonRound, tieRound
         var text: String {
@@ -354,5 +469,18 @@ extension ObjectDetectionController: ObjectScannerProtocol {
                 }
             }
         }
+    }
+    
+    private func activateSpeech(type: AnnouncementType) {
+        // Line 1. Create an instance of AVSpeechSynthesizer.
+        let speechSynthesizer = AVSpeechSynthesizer()
+        // Line 2. Create an instance of AVSpeechUtterance and pass in a String to be spoken.
+        let speechUtterance: AVSpeechUtterance = AVSpeechUtterance(string: type.text)
+        //Line 3. Specify the speech utterance rate. 1 = speaking extremely the higher the values the slower speech patterns. The default rate, AVSpeechUtteranceDefaultSpeechRate is 0.5
+//        speechUtterance.rate = AVSpeechUtteranceMaximumSpeechRate / 4.0
+        // Line 4. Specify the voice. It is explicitly set to English here, but it will use the device default if not specified.
+        speechUtterance.voice = AVSpeechSynthesisVoice(language: "en-US")
+        // Line 5. Pass in the urrerance to the synthesizer to actually speak.
+        speechSynthesizer.speak(speechUtterance)
     }
 }
