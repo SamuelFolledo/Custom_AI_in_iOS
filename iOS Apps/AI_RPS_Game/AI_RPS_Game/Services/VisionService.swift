@@ -139,12 +139,8 @@ extension VisionService {
                 detectedObjects.append(newDetectedObject)
             }
         }
-        print(detectedObjects.map{$0.type})
-        //draw the bounding boxes
-        for object in detectedObjects {
-            previewView.drawLayer(in: object.location, color: object.type.color, with: object.confidenceText)
-        }
-        delegate?.updateDetectedObjects(newDetectedObjects: detectedObjects)
+//        print("Detected objects types are: ", detectedObjects.map{$0.type})
+        return detectedObjects
     }
 }
 
