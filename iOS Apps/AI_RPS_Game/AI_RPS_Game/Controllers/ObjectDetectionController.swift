@@ -331,24 +331,22 @@ extension ObjectDetectionController: ObjectScannerProtocol {
         switch p1RoundResult {
         case .draw:
             activateSpeech(type: .tieRound)
-            prepareNextRound()
         case .lose: //if p1 loses the round
             p2Score += 1
             if p2Score == maxScore {
                 assignP1AsWinner(false)
-            } else {
-                activateSpeech(type: .p2WonRound)
-                prepareNextRound()
+                return
             }
+            activateSpeech(type: .p2WonRound)
         case .win: //if p2 wins the round
             p1Score += 1
             if p1Score == maxScore {
                 assignP1AsWinner(true)
-            } else {
-                activateSpeech(type: .p1WonRound)
-                prepareNextRound()
+                return
             }
+            activateSpeech(type: .p1WonRound)
         }
+        prepareNextRound()
     }
     
     ///call when p1 or p2 wins
