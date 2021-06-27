@@ -320,16 +320,16 @@ extension ObjectDetectionController: ObjectScannerProtocol {
                 currentP1Move?.isP1 = true
             }
             if let p1Move = currentP1Move, let p2Move = currentP2Move { //if p1Move and p2Move is populated
+                startDelayTimer()
                 let p1RoundResult = getP1RoundResults(detectedObjects: [p1Move, p2Move])
                 updateRoundWith(p1RoundResult: p1RoundResult)
+//                print("111 round result p1 = \(p1RoundResult)\tScore = \(p1Score):\(p2Score)")
             }
         } else if newDetectedObjects.count > 2 {
             print("Theres more than 2 detected results")
         } else { //there's exactly 2 newDetectedObjects
             //add a delay
-            let delayLength = 1.8
-            willDelay = true
-            delayTimer = Timer.scheduledTimer(timeInterval: TimeInterval(delayLength), target: self, selector: #selector(updateDelayTimer), userInfo: nil, repeats: true)
+            startDelayTimer()
             //assign property for detectedObject.isP1
             let separatedObjects = separateDetectedObjects(newDetectedObjects: newDetectedObjects)
             //get result from p1 and p2 move
@@ -337,6 +337,12 @@ extension ObjectDetectionController: ObjectScannerProtocol {
             updateRoundWith(p1RoundResult: p1RoundResult)
             print("round result p1 = \(p1RoundResult)\tScore = \(p1Score):\(p2Score)")
         }
+    }
+    
+    private func startDelayTimer() {
+        let delayLength = 1.8
+        willDelay = true
+        delayTimer = Timer.scheduledTimer(timeInterval: TimeInterval(delayLength), target: self, selector: #selector(updateDelayTimer), userInfo: nil, repeats: true)
     }
     
     ///updatee Views and play an audio based on round result
