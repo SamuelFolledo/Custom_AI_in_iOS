@@ -121,11 +121,10 @@ extension VisionService {
             let rectangularLocation = trackedObject.boundingBox.applying(translate).applying(transform)
             //create a detectedObject model from the trackedObject
             guard let newDetectedObject = DetectedObject(trackedObject: trackedObject, location: rectangularLocation) else { continue }
-//            print("Location: \(rectangularLocation) of \(newDetectedObject.confidenceText)")
             //loop through each detectedObjects appended already and make sure to remove detectedObjects that has duplicates and lower confidence
             var shouldAppend = true
             for (index, object) in detectedObjects.enumerated() { //loop through each detected objects and make sure there are no duplicates
-//                if object.type != newDetectedObject.type { continue }
+                if object.type != newDetectedObject.type { continue }
                 if newDetectedObject.intersectsWith(anotherObject: object) { //if trackedObject intersects with the newDetectedObject in array
                     if object.confidence < newDetectedObject.confidence { //if newDetectedObject has lower confidence... remove detectedObject
                         detectedObjects.remove(at: index)
@@ -139,7 +138,6 @@ extension VisionService {
                 detectedObjects.append(newDetectedObject)
             }
         }
-//        print("Detected objects types are: ", detectedObjects.map{$0.type})
         return detectedObjects
     }
 }
