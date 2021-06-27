@@ -308,8 +308,21 @@ extension ObjectDetectionController: ObjectScannerProtocol {
             print("Wait")
             return
         }
-        if newDetectedObjects.count < 2 {
-//            print("Theres 0-1 detected results")
+        if newDetectedObjects.count == 0 {
+            print("No detected objects found")
+        } else if newDetectedObjects.count == 1 {
+            let object = newDetectedObjects[0]
+            if object.location.minX > UIScreen.main.bounds.width / 3 { //if object's minX is on the right side of 1/3 of the screen, it may be player 2's object
+                currentP2Move = object
+                currentP2Move?.isP1 = false
+            } else {
+                currentP1Move = object
+                currentP1Move?.isP1 = true
+            }
+            if let p1Move = currentP1Move, let p2Move = currentP2Move { //if p1Move and p2Move is populated
+                let p1RoundResult = getP1RoundResults(detectedObjects: [p1Move, p2Move])
+                updateRoundWith(p1RoundResult: p1RoundResult)
+            }
         } else if newDetectedObjects.count > 2 {
             print("Theres more than 2 detected results")
         } else { //there's exactly 2 newDetectedObjects
@@ -384,7 +397,7 @@ extension ObjectDetectionController: ObjectScannerProtocol {
             for i in index+1 ..< newDetectedObjects.count { //compare once with other objects in the array that is located elsewhere
                 let otherObject = newDetectedObjects[i]
                 if object.location.minX == newDetectedObjects[i].location.minX { //if located at the same place, move to the next object
-                    print("WHUT???? Detected same object???")
+                    print("Weird WARNING: objects are the same")
                     continue
                 } else if object.location.minX > otherObject.location.minX { //if object is on the right side of otherObject
                     currentP1Move = otherObject
@@ -402,6 +415,7 @@ extension ObjectDetectionController: ObjectScannerProtocol {
         return resultDetectedObjects
     }
     
+    ///return p1's result for current round (win, lose, draw)
     private func getP1RoundResults(detectedObjects: [DetectedObject]) -> RoundResult {
         if detectedObjects.count != 2 {
             print("WARNING: detectedObjects have a count \(detectedObjects.count), while expecting 2 only")
@@ -436,6 +450,7 @@ extension ObjectDetectionController: ObjectScannerProtocol {
         willDelay = false
     }
     
+    ///have Siri read from a text
     private func activateSpeech(type: AnnouncementType) {
         // Line 1. Create an instance of AVSpeechSynthesizer.
         let speechSynthesizer = AVSpeechSynthesizer()
