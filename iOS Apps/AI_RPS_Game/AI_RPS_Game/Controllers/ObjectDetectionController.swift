@@ -244,7 +244,9 @@ private extension ObjectDetectionController {
         camera = Camera(with: self)
         camera.startCameraSession { (error) in
             if let error = error {
-                fatalError("Camera start sesssion error: \(error.localizedDescription)")
+                DispatchQueue.main.async { [weak self] in
+                    self?.presentAlert(title: "Camera Start Session Error", message: error.localizedDescription)
+                }
             }
             DispatchQueue.main.async { [weak self] in
                 self?.camera.getPreviewLayer(for: self!.previewView)
@@ -345,57 +347,6 @@ extension ObjectDetectionController: ObjectScannerProtocol {
         delayTimer = Timer.scheduledTimer(timeInterval: TimeInterval(delayLength), target: self, selector: #selector(updateDelayTimer), userInfo: nil, repeats: true)
     }
     
-    ///updatee Views and play an audio based on round result
-    private func updateRoundWith(p1RoundResult: RoundResult) {
-        switch p1RoundResult {
-        case .draw:
-            activateSpeech(type: .tieRound)
-        case .lose: //if p1 loses the round
-            p2Score += 1
-            if p2Score == maxScore {
-                assignP1AsWinner(false)
-                return
-            }
-            activateSpeech(type: .p2WonRound)
-        case .win: //if p2 wins the round
-            p1Score += 1
-            if p1Score == maxScore {
-                assignP1AsWinner(true)
-                return
-            }
-            activateSpeech(type: .p1WonRound)
-        }
-        prepareNextRound()
-    }
-    
-    ///call when p1 or p2 wins
-    private func assignP1AsWinner(_ didP1Win: Bool) {
-        delayTimer?.invalidate()
-        willDelay = true
-        if didP1Win {
-            titleLabel.text = "P1 win!"
-            activateSpeech(type: .p1WonGame)
-        } else {
-            titleLabel.text = "P2 win!"
-            activateSpeech(type: .p2WonGame)
-        }
-    }
-    
-    ///helper to reset round
-    private func prepareNextRound() {
-        currentRound += 1
-        currentP1Move = nil
-        currentP2Move = nil
-    }
-    
-    //MARK: DetectedObjectScanner Helpers
-    
-    ///updates the camera's focus point at the detectedObject's mid point location
-    private func updateCameraFocusPoint(detectedObject: DetectedObject) {
-        let midPoint = CGPoint(x: detectedObject.location.midX, y: detectedObject.location.midY)
-        camera.updateCameraFocusPoint(midPoint: midPoint)
-    }
-    
     private func separateDetectedObjects(newDetectedObjects: [DetectedObject]) -> [DetectedObject] {
         var resultDetectedObjects = newDetectedObjects
         //compare locations
@@ -449,12 +400,43 @@ extension ObjectDetectionController: ObjectScannerProtocol {
         return .draw
     }
     
-    @objc func updateDelayTimer() {
-        //reset round
-        print("next round")
-        delayTimer?.invalidate()
-        willDelay = false
+    ///updatee Views and play an audio based on round result
+    private func updateRoundWith(p1RoundResult: RoundResult) {
+        switch p1RoundResult {
+        case .draw:
+            activateSpeech(type: .tieRound)
+        case .lose: //if p1 loses the round
+            p2Score += 1
+            if p2Score == maxScore {
+                assignP1AsWinner(false)
+                return
+            }
+            activateSpeech(type: .p2WonRound)
+        case .win: //if p2 wins the round
+            p1Score += 1
+            if p1Score == maxScore {
+                assignP1AsWinner(true)
+                return
+            }
+            activateSpeech(type: .p1WonRound)
+        }
+        prepareNextRound()
     }
+    
+    ///call when p1 or p2 wins
+    private func assignP1AsWinner(_ didP1Win: Bool) {
+        delayTimer?.invalidate()
+        willDelay = true
+        if didP1Win {
+            titleLabel.text = "P1 win!"
+            activateSpeech(type: .p1WonGame)
+        } else {
+            titleLabel.text = "P2 win!"
+            activateSpeech(type: .p2WonGame)
+        }
+    }
+    
+    //MARK: DetectedObjectScanner Helpers
     
     ///have Siri read from a text
     private func activateSpeech(type: AnnouncementType) {
@@ -468,6 +450,26 @@ extension ObjectDetectionController: ObjectScannerProtocol {
         speechUtterance.voice = AVSpeechSynthesisVoice(language: "en-US")
         // Line 5. Pass in the urrerance to the synthesizer to actually speak.
         speechSynthesizer.speak(speechUtterance)
+    }
+    
+    ///helper to reset round
+    private func prepareNextRound() {
+        currentRound += 1
+        currentP1Move = nil
+        currentP2Move = nil
+    }
+    
+    ///updates the camera's focus point at the detectedObject's mid point location
+    private func updateCameraFocusPoint(detectedObject: DetectedObject) {
+        let midPoint = CGPoint(x: detectedObject.location.midX, y: detectedObject.location.midY)
+        camera.updateCameraFocusPoint(midPoint: midPoint)
+    }
+    
+    @objc func updateDelayTimer() {
+        //reset round
+        print("next round")
+        delayTimer?.invalidate()
+        willDelay = false
     }
 }
 
