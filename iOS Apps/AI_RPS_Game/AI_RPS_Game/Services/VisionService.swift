@@ -24,7 +24,7 @@ class VisionService: VisionServiceInputs {
     enum Config {
         /// Confidence in % expressed from 0 - 1 which will be used
         /// to draw bounding boxes on the images in the preview
-        static let confidence: VNConfidence = 0.1
+        static let confidence: VNConfidence = 0.2
     }
     
     // MARK: Private
@@ -87,14 +87,14 @@ extension VisionService {
         self.requests = [request]
     }
 
-    func completionRequestHandler(request: VNRequest, error: Error?) {
-        guard let observations = request.results as? [VNRecognizedObjectObservation],
-              !observations.isEmpty
-        else { return }
-        DispatchQueue.main.async {
-            self.drawVisionRequestResults(results: observations)
-        }
-    }
+//    func completionRequestHandler(request: VNRequest, error: Error?) {
+//        guard let observations = request.results as? [VNRecognizedObjectObservation],
+//              !observations.isEmpty
+//        else { return }
+//        DispatchQueue.main.async {
+//            self.drawVisionRequestResults(results: observations)
+//        }
+//    }
 
     func drawVisionRequestResults(results: [VNRecognizedObjectObservation]) {
         // remove all previously added masks
@@ -138,6 +138,7 @@ extension VisionService {
                 detectedObjects.append(newDetectedObject)
             }
         }
+//        print("There are \(detectedObjects.count) objects found out of \(highConfidenceObjects.count) and \(recognizedObjects.count)")
         return detectedObjects
     }
 }
