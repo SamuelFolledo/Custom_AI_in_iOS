@@ -100,8 +100,11 @@ extension VisionService {
         // remove all previously added masks
         previewView.removeMasks()
         //filter (unwanted duplicates, low confidence) objects
+        print("Detected \(results.count) objects")
         let detectedObjects: [DetectedObject] = getCleanedDetectedObjects(results)
         //draw the bounding boxes
+        print("Cleaned and left with \(detectedObjects.count)")
+        print("")
         for object in detectedObjects {
             previewView.drawLayer(in: object.location, color: object.type.color, with: object.confidenceText)
         }
@@ -122,19 +125,24 @@ extension VisionService {
             //create a detectedObject model from the trackedObject
             guard let newDetectedObject = DetectedObject(trackedObject: trackedObject, location: rectangularLocation) else { continue }
             //loop through each detectedObjects appended already and make sure to remove detectedObjects that has duplicates and lower confidence
-            var shouldAppend = true
+            var shouldAddObject = true
             for (index, object) in detectedObjects.enumerated() { //loop through each detected objects and make sure there are no duplicates
-                if object.type != newDetectedObject.type { continue }
-                if newDetectedObject.intersectsWith(anotherObject: object) { //if trackedObject intersects with the newDetectedObject in array
+                if object.type != newDetectedObject.type {
+                    print("Skipping because \(object.type.rawValue) != \(newDetectedObject.type.rawValue)")
+                    continue
+                }
+                if object.location.isMidXClose(to: newDetectedObject.location) { //if trackedObject intersects with the newDetectedObject in array
                     if object.confidence < newDetectedObject.confidence { //if newDetectedObject has lower confidence... remove detectedObject
                         detectedObjects.remove(at: index)
                     } else {
-                        shouldAppend = false
+                        shouldAddObject = false
                     }
                     break
+                } else {
+                    print("Not midx close to for \(object.type.rawValue) and \(newDetectedObject.type.rawValue)")
                 }
             }
-            if shouldAppend {
+            if shouldAddObject {
                 detectedObjects.append(newDetectedObject)
             }
         }

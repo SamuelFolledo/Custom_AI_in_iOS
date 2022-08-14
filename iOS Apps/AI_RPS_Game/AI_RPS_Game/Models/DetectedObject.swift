@@ -30,9 +30,8 @@ struct DetectedObject: Identifiable, DetectedObjectImage {
     private(set) var confidence: VNConfidence
     private(set) var confidenceText: String
     private(set) var location: CGRect
-    private(set) var image: UIImage!
-    var isSelected = true
-    var isP1: Bool?
+    private(set) var image: UIImage! //currently unused
+    var isSelected = false //currently unused
     
     init?(trackedObject: VNRecognizedObjectObservation, location: CGRect) {
         guard let label = trackedObject.labels.first?.identifier,
@@ -58,5 +57,26 @@ struct DetectedObject: Identifiable, DetectedObjectImage {
             return false
         }
         return true
+    }
+}
+
+extension CGRect {
+    func isOnTheLeftScreen() -> Bool {
+        return self.midX < UIScreen.main.bounds.width / 2
+    }
+    
+    func isOnTheLeftOf(_ location: CGRect) -> Bool {
+        let distance = midX - location.midX
+        if distance == 0 {
+            print("WARNING: 0 distance between \(midX) and \(location.midX)")
+            return false
+        } else if distance < 0 {
+            return true
+        }
+        return false
+    }
+    
+    func isMidXClose(to: CGRect) -> Bool {
+        return abs(midX - to.midX) < 100
     }
 }

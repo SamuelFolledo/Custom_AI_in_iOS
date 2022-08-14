@@ -8,7 +8,7 @@
 import UIKit.UIColor
 import Vision.VNObservation
 
-enum DetectedObjectType {
+enum DetectedObjectType: String {
     case macMini, clock, pinkStickyNote, yellowStickyNote, scissor, rock, paper, pen, remote, applePencil, keyboard, macbook, handSanitizer, sprayBottle, unknown
     
     ///Color for previewView's bounding box

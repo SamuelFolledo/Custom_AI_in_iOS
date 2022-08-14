@@ -5,7 +5,6 @@
 //  Created by Samuel Folledo on 4/28/21.
 //
 
-//import SnapKit
 import UIKit
 import AVFoundation
 import Vision
@@ -13,10 +12,10 @@ import Vision
 class ObjectDetectionController: UIViewController {
     
     // MARK: Properties
-    private var currentP1Move: DetectedObject?
-    private var currentP2Move: DetectedObject?
+    private var currentP1Move: Move?
+    private var currentP2Move: Move?
     private let maxScore: Int = 5
-    private var currentRound: Int = 0
+    private var currentRound: Int = 1
     private let defaultPhotosToTake: Int = 16
     private var numberOfPhotosToTake: Int = 16
     private let cameraShutterSoundID: SystemSoundID = 1108 // use 1157 if 1108 is unsavory
@@ -36,7 +35,7 @@ class ObjectDetectionController: UIViewController {
     private let captureButton: UIButton = {
         let button = UIButton()
         button.backgroundColor = UIColor.white.withAlphaComponent(0.7)
-        button.addTarget(self, action: #selector(captureButtonTapped), for: .touchUpInside)
+        button.addTarget(ObjectDetectionController.self, action: #selector(captureButtonTapped), for: .touchUpInside)
         button.alpha = 0
         return button
     }()
@@ -48,7 +47,7 @@ class ObjectDetectionController: UIViewController {
         slider.tintColor = UIColor.green
         slider.transform = CGAffineTransform(rotationAngle: CGFloat(-(Double.pi) / 2))
         slider.setValue(100, animated: true)
-        slider.addTarget(self, action: #selector(brightnessLevelDidChange(_:)), for: .valueChanged)
+        slider.addTarget(ObjectDetectionController.self, action: #selector(brightnessLevelDidChange(_:)), for: .valueChanged)
         return slider
     }()
     private lazy var titleLabel: UILabel = {
@@ -90,12 +89,6 @@ class ObjectDetectionController: UIViewController {
         label.layer.borderColor = UIColor.white.withAlphaComponent(0.2).cgColor
         return label
     }()
-//    private lazy var instructionsButton: UIButton = {
-//        let normalImage = UIImage(named: "question-mark")?.withTintColor(.white).withRenderingMode(.alwaysOriginal)
-//        let button = AppService.createButton(type: .roundedGrayButton(image: normalImage))
-//        button.addTarget(self, action: #selector(instructionButtonTapped), for: .touchUpInside)
-//        return button
-//    }()
     private lazy var previewView: CameraPreview = {
         let view = CameraPreview()
         return view
@@ -227,19 +220,6 @@ private extension ObjectDetectionController {
         visionService = VisionService(with: previewView, trackedItems: trackedItems, delegate: self)
     }
     
-    private func constraintCameraPreview() {
-        previewView = CameraPreview()
-        previewView.removeMasks()
-        view.addSubview(previewView)
-        previewView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            previewView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            previewView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            previewView.widthAnchor.constraint(equalToConstant: view.frame.width),
-            previewView.heightAnchor.constraint(equalToConstant: view.frame.height),
-        ])
-    }
-    
     func configureCamera() {
         camera = Camera(with: self)
         camera.startCameraSession { (error) in
@@ -253,6 +233,19 @@ private extension ObjectDetectionController {
                 self?.camera.toggleLight(on: true)
             }
         }
+    }
+    
+    func constraintCameraPreview() {
+        previewView = CameraPreview()
+        previewView.removeMasks()
+        view.addSubview(previewView)
+        previewView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            previewView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            previewView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            previewView.widthAnchor.constraint(equalToConstant: view.frame.width),
+            previewView.heightAnchor.constraint(equalToConstant: view.frame.height),
+        ])
     }
 }
 
@@ -307,143 +300,118 @@ extension ObjectDetectionController: ObjectScannerProtocol {
 //        camera.takePhoto()
         //get the objects and assign p1 or p2
         if willDelay {
-            print("Wait")
+            print("Waiting...")
             return
         }
-        if newDetectedObjects.count == 0 {
-            print("No detected objects found")
-        } else if newDetectedObjects.count == 1 {
-            let object = newDetectedObjects[0]
-            if object.location.minX > UIScreen.main.bounds.width / 3 { //if object's minX is on the right side of 1/3 of the screen, it may be player 2's object
-                currentP2Move = object
-                currentP2Move?.isP1 = false
-            } else {
-                currentP1Move = object
-                currentP1Move?.isP1 = true
-            }
-            if let p1Move = currentP1Move, let p2Move = currentP2Move { //if p1Move and p2Move is populated
-                startDelayTimer()
-                let p1RoundResult = getP1RoundResults(detectedObjects: [p1Move, p2Move])
-                updateRoundWith(p1RoundResult: p1RoundResult)
-//                print("111 round result p1 = \(p1RoundResult)\tScore = \(p1Score):\(p2Score)")
-            }
-        } else if newDetectedObjects.count > 2 {
-            print("Theres more than 2 detected results")
-        } else { //there's exactly 2 newDetectedObjects
+        startDelayTimer()
+        setPlayerMoves(from: newDetectedObjects)
+        if let p1Move = currentP1Move, let p2Move = currentP2Move { //if p1Move and p2Move is populated
+            print("Now has 2 moves set")
             //add a delay
-            startDelayTimer()
-            //assign property for detectedObject.isP1
-            let separatedObjects = separateDetectedObjects(newDetectedObjects: newDetectedObjects)
-            //get result from p1 and p2 move
-            let p1RoundResult = getP1RoundResults(detectedObjects: separatedObjects)
-            updateRoundWith(p1RoundResult: p1RoundResult)
-            print("round result p1 = \(p1RoundResult)\tScore = \(p1Score):\(p2Score)")
+            let roundResult = getCurrentRoundResult(p1Move: p1Move.type, p2Move: p2Move.type)
+            activateSpeech(result: roundResult)
+            switch roundResult {
+            case .tieRound:
+                startNextRound()
+            case .p1WonRound:
+                p1Score += 1
+                startNextRound()
+            case .p2WonRound:
+                p2Score += 1
+                startNextRound()
+            case .p1WonGame, .p2WonGame:
+                gameOver(result: roundResult)
+            }
+        } else {
+            if currentP1Move == nil {
+                print("p1 move is not set yet")
+            } else if currentP2Move == nil {
+                print("p2 move is not set yet")
+            }
         }
+        print("--------------------------------------------")
     }
     
     private func startDelayTimer() {
-        let delayLength = 1.8
+        let delayLength: CGFloat = 2
         willDelay = true
         delayTimer = Timer.scheduledTimer(timeInterval: TimeInterval(delayLength), target: self, selector: #selector(updateDelayTimer), userInfo: nil, repeats: true)
     }
     
-    private func separateDetectedObjects(newDetectedObjects: [DetectedObject]) -> [DetectedObject] {
-        var resultDetectedObjects = newDetectedObjects
-        //compare locations
-        for (index, object) in newDetectedObjects.enumerated() where index != newDetectedObjects.count - 1 { //loop through each object excluding the last element in the array
-            for i in index+1 ..< newDetectedObjects.count { //compare once with other objects in the array that is located elsewhere
-                let otherObject = newDetectedObjects[i]
-                if object.location.minX == newDetectedObjects[i].location.minX { //if located at the same place, move to the next object
-                    print("Weird WARNING: objects are the same")
-                    continue
-                } else if object.location.minX > otherObject.location.minX { //if object is on the right side of otherObject
-                    currentP1Move = otherObject
-                    currentP2Move = object
-                    resultDetectedObjects[index].isP1 = false
-                    resultDetectedObjects[i].isP1 = true
-                } else {
-                    currentP1Move = object
-                    currentP2Move = otherObject
-                    resultDetectedObjects[index].isP1 = true
-                    resultDetectedObjects[i].isP1 = false
+    /**
+     Sets player 1 and player 2's moves
+     - Parameter - an array of detected objects, must have at least 2 elements
+     */
+    private func setPlayerMoves(from newDetectedObjects: [DetectedObject]) {
+        if newDetectedObjects.isEmpty {
+            print("WARNING: Failed to set mvoes because newDetectedObjects is empty")
+        } else if newDetectedObjects.count == 1 {
+            let move = Move(detectedObject: newDetectedObjects[0])
+            if move.isP1 && (currentP1Move == nil || currentP1Move?.type == move.type) {
+                print("1 object found for p1 \(move.type)")
+                currentP1Move = move
+            } else if !move.isP1 && (currentP2Move == nil || currentP2Move?.type == move.type) {
+                print("1 object found for p2 \(move.type)")
+                currentP2Move = move
+            } else {
+                print("WARNING: Unhandled current move case")
+            }
+        } else if newDetectedObjects.count > 1 {
+            //compare locations
+            for (index, object) in newDetectedObjects.enumerated() where index != newDetectedObjects.count - 1 { //loop through each object excluding the last element in the array
+                for nextIndex in index+1 ..< newDetectedObjects.count { //compare once with other objects in the array that is located elsewhere
+                    let move = Move(detectedObject: object)
+                    let nextMove = Move(detectedObject: newDetectedObjects[nextIndex])
+                    if move.isP1 && nextMove.isP1 {
+                        print("Both moves are from p1")
+                        continue
+                    }
+                    if move.location.isMidXClose(to: nextMove.location) {
+                        print("WARNING: Unhandled move 1 and move 2 midX is close and might the same object")
+                    } else {
+                        if move.location.isOnTheLeftOf(nextMove.location) {
+                            currentP1Move = move
+                            currentP2Move = nextMove
+                        } else {
+                            currentP1Move = nextMove
+                            currentP2Move = move
+                        }
+                        print("Updated player moves with p1 \((currentP1Move != nil) ? currentP1Move!.type.rawValue : "") and p2 \((currentP2Move != nil) ? currentP2Move!.type.rawValue : "")")
+                    }
                 }
             }
-        }
-        return resultDetectedObjects
-    }
-    
-    ///return p1's result for current round (win, lose, draw)
-    private func getP1RoundResults(detectedObjects: [DetectedObject]) -> RoundResult {
-        if detectedObjects.count != 2 {
-            print("WARNING: detectedObjects have a count \(detectedObjects.count), while expecting 2 only")
-            return .draw
-        }
-        let firstMove = detectedObjects[0]
-        let secondMove = detectedObjects[1]
-        let p1Type: DetectedObjectType
-        let p2Type: DetectedObjectType
-        if let isFirstPlayer1 = firstMove.isP1, isFirstPlayer1 { //if first move is p1
-            p1Type = firstMove.type
-            p2Type = secondMove.type
         } else {
-            p1Type = secondMove.type
-            p2Type = firstMove.type
+            print("WARNING: Unhandled newDetectedObjects < 0")
         }
-        if p1Type == p2Type {
-            return .draw
-        }
-        if (p1Type == .paper && p2Type == .scissor) || (p1Type == .rock && p2Type == .paper) || (p1Type == .scissor && p2Type == .rock) {
-            return .lose
-        } else if (p1Type == .rock && p2Type == .scissor) || (p1Type == .scissor && p2Type == .paper) || (p1Type == .paper && p2Type == .rock) {
-            return .win
-        }
-        return .draw
     }
     
-    ///updatee Views and play an audio based on round result
-    private func updateRoundWith(p1RoundResult: RoundResult) {
-        switch p1RoundResult {
-        case .draw:
-            activateSpeech(type: .tieRound)
-        case .lose: //if p1 loses the round
-            p2Score += 1
-            if p2Score == maxScore {
-                assignP1AsWinner(false)
-                return
-            }
-            activateSpeech(type: .p2WonRound)
-        case .win: //if p2 wins the round
-            p1Score += 1
-            if p1Score == maxScore {
-                assignP1AsWinner(true)
-                return
-            }
-            activateSpeech(type: .p1WonRound)
+    ///return current round's result
+    private func getCurrentRoundResult(p1Move: DetectedObjectType, p2Move: DetectedObjectType) -> RoundResult {
+        var roundResult: RoundResult = .tieRound
+        if p1Move == p2Move {
+            roundResult = .tieRound
         }
-        prepareNextRound()
-    }
-    
-    ///call when p1 or p2 wins
-    private func assignP1AsWinner(_ didP1Win: Bool) {
-        delayTimer?.invalidate()
-        willDelay = true
-        if didP1Win {
-            titleLabel.text = "P1 win!"
-            activateSpeech(type: .p1WonGame)
-        } else {
-            titleLabel.text = "P2 win!"
-            activateSpeech(type: .p2WonGame)
+        if (p1Move == .paper && p2Move == .scissor) || (p1Move == .rock && p2Move == .paper) || (p1Move == .scissor && p2Move == .rock) {
+            roundResult = .p2WonRound
+        } else if (p1Move == .rock && p2Move == .scissor) || (p1Move == .scissor && p2Move == .paper) || (p1Move == .paper && p2Move == .rock) {
+            roundResult = .p1WonRound
         }
+        if(roundResult == .p1WonRound && p1Score + 1 >= maxScore) {
+            roundResult = .p1WonGame
+        } else if(roundResult == .p2WonRound && p2Score + 1 >= maxScore) {
+            roundResult = .p2WonGame
+        }
+        return roundResult
     }
     
     //MARK: DetectedObjectScanner Helpers
     
     ///have Siri read from a text
-    private func activateSpeech(type: AnnouncementType) {
+    private func activateSpeech(result: RoundResult) {
         // Line 1. Create an instance of AVSpeechSynthesizer.
         let speechSynthesizer = AVSpeechSynthesizer()
         // Line 2. Create an instance of AVSpeechUtterance and pass in a String to be spoken.
-        let speechUtterance: AVSpeechUtterance = AVSpeechUtterance(string: type.text)
+        let speechUtterance: AVSpeechUtterance = AVSpeechUtterance(string: result.announcement)
         //Line 3. Specify the speech utterance rate. 1 = speaking extremely the higher the values the slower speech patterns. The default rate, AVSpeechUtteranceDefaultSpeechRate is 0.5
 //        speechUtterance.rate = AVSpeechUtteranceMaximumSpeechRate / 4.0
         // Line 4. Specify the voice. It is explicitly set to English here, but it will use the device default if not specified.
@@ -453,10 +421,24 @@ extension ObjectDetectionController: ObjectScannerProtocol {
     }
     
     ///helper to reset round
-    private func prepareNextRound() {
+    private func startNextRound() {
         currentRound += 1
         currentP1Move = nil
         currentP2Move = nil
+        print("")
+        print("==================================")
+        print("Starting round \(currentRound)")
+    }
+    
+    private func gameOver(result: RoundResult) {
+        delayTimer?.invalidate()
+        willDelay = true
+        switch result {
+        case .tieRound, .p1WonRound, .p2WonRound:
+            break
+        case .p1WonGame, .p2WonGame:
+            titleLabel.text = result.rawValue
+        }
     }
     
     ///updates the camera's focus point at the detectedObject's mid point location
@@ -466,31 +448,56 @@ extension ObjectDetectionController: ObjectScannerProtocol {
     }
     
     @objc func updateDelayTimer() {
-        //reset round
-        print("next round")
         delayTimer?.invalidate()
         willDelay = false
     }
 }
 
-//MARK: - Enums Extension
-extension ObjectDetectionController {
-    private enum RoundResult {
-        case win, lose, draw
-    }
-    
-    private enum AnnouncementType {
-        case p1WonGame, p2WonGame, p1WonRound, p2WonRound, tieRound
-        var text: String {
+//MARK: - Enums/Structs
+private extension ObjectDetectionController {
+    enum RoundResult: String {
+        case tieRound, p1WonRound, p2WonRound, p1WonGame, p2WonGame
+        
+        var description: String {
+            return self.rawValue
+        }
+        
+        var announcement: String {
             get {
                 switch self {
-                case .p1WonGame: return "Player 1 won the game"
-                case .p2WonGame: return "Player 2 won the game"
+                case .tieRound: return "Tied"
                 case .p1WonRound: return "Player 1 plus 1"
                 case .p2WonRound: return "Player 2 plus 1"
-                case .tieRound: return "Tied"
+                case .p1WonGame: return "Player 1 wins"
+                case .p2WonGame: return "Player 2 wins"
                 }
             }
+        }
+    }
+    
+    struct Move {
+        private var object: DetectedObject
+        
+        var isP1: Bool
+        var type: DetectedObjectType
+        var location: CGRect
+        
+        init(detectedObject: DetectedObject) {
+            self.object = detectedObject
+            self.type = detectedObject.type
+            self.location = detectedObject.location
+            if detectedObject.location.isOnTheLeftScreen() {
+                //if object's midX is on the left half of the screen, assume it is p1's move
+                print("move created for p1 = \(detectedObject.type)")
+                isP1 = true
+            } else {
+                print("move created for p2 = \(detectedObject.type)")
+                isP1 = false
+            }
+        }
+        
+        func isOnTheLeftSideOfScreen() -> Bool {
+            return location.isOnTheLeftScreen()
         }
     }
 }
