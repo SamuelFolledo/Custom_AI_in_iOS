@@ -9,6 +9,18 @@ import SwiftUI
 import AVFoundation
 import Vision
 
+struct CameraCapturePreviewView: UIViewRepresentable {
+    func makeUIView(context: Context) -> UICameraCapturePreviewView {
+        let view = UICameraCapturePreviewView()
+        view.setupSession()
+        view.setupPreview()
+        return view
+    }
+    
+    func updateUIView(_ uiView: UICameraCapturePreviewView, context: Context) {
+    }
+}
+
 class UICameraCapturePreviewView: UIView, AVCaptureVideoDataOutputSampleBufferDelegate {
     // AVCaptureVideoDataOutputSampleBufferDelegate
     // when you want to handle the video input every second, you will add the delegate
@@ -22,12 +34,8 @@ class UICameraCapturePreviewView: UIView, AVCaptureVideoDataOutputSampleBufferDe
             return model
         }
     }
-    
     var captureSession: AVCaptureSession!
-    
     var resultLabel: UILabel!
-    
-    
     
     func setupSession() {
         captureSession = AVCaptureSession()
@@ -52,9 +60,9 @@ class UICameraCapturePreviewView: UIView, AVCaptureVideoDataOutputSampleBufferDe
     func setupPreview() {
         self.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
         
-        let previewLayer = AVCaptureVideoPreviewLayer(session: self.captureSession)
-        previewLayer.frame = self.frame
-        self.layer.addSublayer(previewLayer)
+        let previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
+        previewLayer.frame = frame
+        layer.addSublayer(previewLayer)
         
         resultLabel = UILabel()
         resultLabel.text = ""
@@ -63,16 +71,15 @@ class UICameraCapturePreviewView: UIView, AVCaptureVideoDataOutputSampleBufferDe
         resultLabel.textAlignment = NSTextAlignment.center
         resultLabel.font = UIFont.boldSystemFont(ofSize: 20.0)
         resultLabel.backgroundColor = UIColor(red: 255, green: 255, blue: 255, alpha: 0.7)
-        self.addSubview(resultLabel)
+        addSubview(resultLabel)
         
-        self.captureSession.startRunning()
+        captureSession.startRunning()
     }
     
-    // captureOutput will be called for each frame was written
+    // captureOutput will be called for each frame written
     func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
-        
-        // Recognise the object every 20 frames
-        if recognitionInterval < 20 {
+        // Recognise the object every 10 frames
+        if recognitionInterval < 10 {
             recognitionInterval += 1
             return
         }
@@ -82,39 +89,67 @@ class UICameraCapturePreviewView: UIView, AVCaptureVideoDataOutputSampleBufferDe
         guard let pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) else { return }
         
         // Create image process request, pass model and result
-        let request = VNCoreMLRequest(model: mlModel) {
-            (request: VNRequest, error: Error?) in
-            
-            // Get results as VNClassificationObservation array
-            guard let results = request.results as? [VNClassificationObservation] else { return }
-            
-            // top 5 results
+        let request = VNCoreMLRequest(model: mlModel) { (request: VNRequest, error: Error?) in
+            if let error = error {
+                print("Error setting up vision model \(error.localizedDescription)")
+                return
+            }
+            guard let results = request.results as? [VNRecognizedObjectObservation],
+                  !results.isEmpty
+            else { return }
             var displayText = ""
             for result in results.prefix(5) {
-                displayText += "\(Int(result.confidence * 100))%" + result.identifier + "\n"
+                displayText += "\(result.formattedConfidenceLabel)\n"
             }
-            
             print(displayText)
             // Execute it in the main thread
             DispatchQueue.main.async {
                 self.resultLabel.text = displayText
             }
         }
-        
         // Execute the request
         try? VNImageRequestHandler(cvPixelBuffer: pixelBuffer, options: [:]).perform([request])
     }
 }
 
-struct CameraCapturePreviewView: UIViewRepresentable {
-    
-    func makeUIView(context: Context) -> UICameraCapturePreviewView {
-        let view = UICameraCapturePreviewView()
-        view.setupSession()
-        view.setupPreview()
-        return view
-    }
-    
-    func updateUIView(_ uiView: UICameraCapturePreviewView, context: Context) {
-    }
-}
+
+////MARK: AVCaptureVideoDataOutputSampleBufferDelegate
+//extension UICameraCapturePreviewView: AVCaptureVideoDataOutputSampleBufferDelegate {
+//    //Delegate method that notifies the delegate that a new video frame was written.
+//    func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
+//        if visionService == nil {
+//            DispatchQueue.main.async {
+//                self.previewView.removeMasks()
+//            }
+//            return
+//        }
+//        guard let pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) else { return }
+//        var requestOptions: [VNImageOption: Any] = [:]
+//        if let cameraIntrensicData = CMGetAttachment(sampleBuffer, key: kCMSampleBufferAttachmentKey_CameraIntrinsicMatrix, attachmentModeOut: nil) {
+//            requestOptions = [.cameraIntrinsics: cameraIntrensicData]
+//        }
+//        let exifOrientation = camera!.exifOrientationFromDeviceOrientation()
+//        let orientation = CGImagePropertyOrientation(rawValue: UInt32(exifOrientation))!
+//        let imageRequestHandler = VNImageRequestHandler(cvPixelBuffer: pixelBuffer, orientation: orientation, options: requestOptions)
+//        visionService.performRequest(for: imageRequestHandler)
+//    }
+//}
+//
+////MARK: - AVCapturePhotoCaptureDelegate
+//extension UICameraCapturePreviewView: AVCapturePhotoCaptureDelegate {
+//    //Delegate method called when a photo is captured
+//    func photoOutput(_ output: AVCapturePhotoOutput, didFinishProcessingPhoto photo: AVCapturePhoto, error: Error?) {
+//        if let error = error {
+//            print("Error processing photo \(error.localizedDescription)")
+//        } else if let dataImage = photo.fileDataRepresentation() {
+//            //if no error, then get the image and append to detectedObjectImages
+//            let dataProvider = CGDataProvider(data: dataImage as CFData)
+//            let cgImageRef: CGImage! = CGImage(jpegDataProviderSource: dataProvider!, decode: nil, shouldInterpolate: true, intent: .defaultIntent)
+//            let imageOrientation: UIImage.Orientation = .up
+//            let image = UIImage(cgImage: cgImageRef, scale: 1.0, orientation: imageOrientation)
+//            print("Got the image output \(image)")
+//        } else {
+//            presentAlert(title: "Image Error", message: "Failed to get an image")
+//        }
+//    }
+//}
