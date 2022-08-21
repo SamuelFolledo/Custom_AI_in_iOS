@@ -1,0 +1,533 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 55;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		7EC1DEDA28A9C8D600CEA0CC /* RPS_ScorerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC1DECA28A9C8D500CEA0CC /* RPS_ScorerApp.swift */; };
+		7EC1DEDB28A9C8D600CEA0CC /* RPS_ScorerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC1DECA28A9C8D500CEA0CC /* RPS_ScorerApp.swift */; };
+		7EC1DEDC28A9C8D600CEA0CC /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC1DECB28A9C8D500CEA0CC /* ContentView.swift */; };
+		7EC1DEDD28A9C8D600CEA0CC /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EC1DECB28A9C8D500CEA0CC /* ContentView.swift */; };
+		7EC1DEDE28A9C8D600CEA0CC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7EC1DECC28A9C8D600CEA0CC /* Assets.xcassets */; };
+		7EC1DEDF28A9C8D600CEA0CC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 7EC1DECC28A9C8D600CEA0CC /* Assets.xcassets */; };
+		7EF0F8EB28B1A21E009128CE /* CameraCapturePreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EF0F8EA28B1A21E009128CE /* CameraCapturePreviewView.swift */; };
+		7EF0F8EC28B1A21E009128CE /* CameraCapturePreviewView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EF0F8EA28B1A21E009128CE /* CameraCapturePreviewView.swift */; };
+		7EF0F8F028B1A23C009128CE /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EF0F8EF28B1A23C009128CE /* GameView.swift */; };
+		7EF0F8F128B1A23C009128CE /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EF0F8EF28B1A23C009128CE /* GameView.swift */; };
+		7EF0F8F328B1A258009128CE /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EF0F8F228B1A258009128CE /* OnboardingView.swift */; };
+		7EF0F8F428B1A258009128CE /* OnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EF0F8F228B1A258009128CE /* OnboardingView.swift */; };
+		7EF0F8F628B1A352009128CE /* my_custom_model.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 7EF0F8F528B1A352009128CE /* my_custom_model.mlmodel */; };
+		7EF0F8F728B1A352009128CE /* my_custom_model.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 7EF0F8F528B1A352009128CE /* my_custom_model.mlmodel */; };
+		7EF0F8FB28B1A4CB009128CE /* UIImage+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EF0F8FA28B1A4CB009128CE /* UIImage+Extensions.swift */; };
+		7EF0F8FC28B1A4CB009128CE /* UIImage+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EF0F8FA28B1A4CB009128CE /* UIImage+Extensions.swift */; };
+		7EF0F8FE28B1A53C009128CE /* GifImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EF0F8FD28B1A53C009128CE /* GifImageView.swift */; };
+		7EF0F8FF28B1A53C009128CE /* GifImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7EF0F8FD28B1A53C009128CE /* GifImageView.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		7EC1DECA28A9C8D500CEA0CC /* RPS_ScorerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RPS_ScorerApp.swift; sourceTree = "<group>"; };
+		7EC1DECB28A9C8D500CEA0CC /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		7EC1DECC28A9C8D600CEA0CC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		7EC1DED128A9C8D600CEA0CC /* RPS Scorer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "RPS Scorer.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		7EC1DED728A9C8D600CEA0CC /* RPS Scorer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "RPS Scorer.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		7EC1DED928A9C8D600CEA0CC /* macOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = macOS.entitlements; sourceTree = "<group>"; };
+		7EF0F8EA28B1A21E009128CE /* CameraCapturePreviewView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraCapturePreviewView.swift; sourceTree = "<group>"; };
+		7EF0F8EF28B1A23C009128CE /* GameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameView.swift; sourceTree = "<group>"; };
+		7EF0F8F228B1A258009128CE /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
+		7EF0F8F528B1A352009128CE /* my_custom_model.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = my_custom_model.mlmodel; sourceTree = "<group>"; };
+		7EF0F8FA28B1A4CB009128CE /* UIImage+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Extensions.swift"; sourceTree = "<group>"; };
+		7EF0F8FD28B1A53C009128CE /* GifImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GifImageView.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		7EC1DECE28A9C8D600CEA0CC /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7EC1DED428A9C8D600CEA0CC /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		7EC1DEC428A9C8D500CEA0CC = {
+			isa = PBXGroup;
+			children = (
+				7EC1DEC928A9C8D500CEA0CC /* Shared */,
+				7EC1DED828A9C8D600CEA0CC /* macOS */,
+				7EC1DED228A9C8D600CEA0CC /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		7EC1DEC928A9C8D500CEA0CC /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				7EC1DECA28A9C8D500CEA0CC /* RPS_ScorerApp.swift */,
+				7EF0F8ED28B1A226009128CE /* Views */,
+				7EF0F8EE28B1A230009128CE /* Screens */,
+				7EF0F8F928B1A4A8009128CE /* Helpers */,
+				7EF0F8F828B1A35B009128CE /* MLModel */,
+				7EC1DECC28A9C8D600CEA0CC /* Assets.xcassets */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
+		7EC1DED228A9C8D600CEA0CC /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				7EC1DED128A9C8D600CEA0CC /* RPS Scorer.app */,
+				7EC1DED728A9C8D600CEA0CC /* RPS Scorer.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		7EC1DED828A9C8D600CEA0CC /* macOS */ = {
+			isa = PBXGroup;
+			children = (
+				7EC1DED928A9C8D600CEA0CC /* macOS.entitlements */,
+			);
+			path = macOS;
+			sourceTree = "<group>";
+		};
+		7EF0F8ED28B1A226009128CE /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				7EF0F8EA28B1A21E009128CE /* CameraCapturePreviewView.swift */,
+				7EF0F8FD28B1A53C009128CE /* GifImageView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		7EF0F8EE28B1A230009128CE /* Screens */ = {
+			isa = PBXGroup;
+			children = (
+				7EC1DECB28A9C8D500CEA0CC /* ContentView.swift */,
+				7EF0F8EF28B1A23C009128CE /* GameView.swift */,
+				7EF0F8F228B1A258009128CE /* OnboardingView.swift */,
+			);
+			path = Screens;
+			sourceTree = "<group>";
+		};
+		7EF0F8F828B1A35B009128CE /* MLModel */ = {
+			isa = PBXGroup;
+			children = (
+				7EF0F8F528B1A352009128CE /* my_custom_model.mlmodel */,
+			);
+			path = MLModel;
+			sourceTree = "<group>";
+		};
+		7EF0F8F928B1A4A8009128CE /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				7EF0F90028B1B721009128CE /* Extensions */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
+		7EF0F90028B1B721009128CE /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				7EF0F8FA28B1A4CB009128CE /* UIImage+Extensions.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		7EC1DED028A9C8D600CEA0CC /* RPS Scorer (iOS) */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7EC1DEE228A9C8D600CEA0CC /* Build configuration list for PBXNativeTarget "RPS Scorer (iOS)" */;
+			buildPhases = (
+				7EC1DECD28A9C8D600CEA0CC /* Sources */,
+				7EC1DECE28A9C8D600CEA0CC /* Frameworks */,
+				7EC1DECF28A9C8D600CEA0CC /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "RPS Scorer (iOS)";
+			productName = "RPS Scorer (iOS)";
+			productReference = 7EC1DED128A9C8D600CEA0CC /* RPS Scorer.app */;
+			productType = "com.apple.product-type.application";
+		};
+		7EC1DED628A9C8D600CEA0CC /* RPS Scorer (macOS) */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 7EC1DEE528A9C8D600CEA0CC /* Build configuration list for PBXNativeTarget "RPS Scorer (macOS)" */;
+			buildPhases = (
+				7EC1DED328A9C8D600CEA0CC /* Sources */,
+				7EC1DED428A9C8D600CEA0CC /* Frameworks */,
+				7EC1DED528A9C8D600CEA0CC /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "RPS Scorer (macOS)";
+			productName = "RPS Scorer (macOS)";
+			productReference = 7EC1DED728A9C8D600CEA0CC /* RPS Scorer.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		7EC1DEC528A9C8D500CEA0CC /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1340;
+				LastUpgradeCheck = 1340;
+				TargetAttributes = {
+					7EC1DED028A9C8D600CEA0CC = {
+						CreatedOnToolsVersion = 13.4.1;
+					};
+					7EC1DED628A9C8D600CEA0CC = {
+						CreatedOnToolsVersion = 13.4.1;
+					};
+				};
+			};
+			buildConfigurationList = 7EC1DEC828A9C8D500CEA0CC /* Build configuration list for PBXProject "RPS Scorer" */;
+			compatibilityVersion = "Xcode 13.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 7EC1DEC428A9C8D500CEA0CC;
+			productRefGroup = 7EC1DED228A9C8D600CEA0CC /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				7EC1DED028A9C8D600CEA0CC /* RPS Scorer (iOS) */,
+				7EC1DED628A9C8D600CEA0CC /* RPS Scorer (macOS) */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		7EC1DECF28A9C8D600CEA0CC /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7EC1DEDE28A9C8D600CEA0CC /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7EC1DED528A9C8D600CEA0CC /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7EC1DEDF28A9C8D600CEA0CC /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		7EC1DECD28A9C8D600CEA0CC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7EC1DEDC28A9C8D600CEA0CC /* ContentView.swift in Sources */,
+				7EF0F8FE28B1A53C009128CE /* GifImageView.swift in Sources */,
+				7EF0F8F028B1A23C009128CE /* GameView.swift in Sources */,
+				7EF0F8EB28B1A21E009128CE /* CameraCapturePreviewView.swift in Sources */,
+				7EF0F8FB28B1A4CB009128CE /* UIImage+Extensions.swift in Sources */,
+				7EF0F8F628B1A352009128CE /* my_custom_model.mlmodel in Sources */,
+				7EF0F8F328B1A258009128CE /* OnboardingView.swift in Sources */,
+				7EC1DEDA28A9C8D600CEA0CC /* RPS_ScorerApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		7EC1DED328A9C8D600CEA0CC /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				7EC1DEDD28A9C8D600CEA0CC /* ContentView.swift in Sources */,
+				7EF0F8FF28B1A53C009128CE /* GifImageView.swift in Sources */,
+				7EF0F8F128B1A23C009128CE /* GameView.swift in Sources */,
+				7EF0F8EC28B1A21E009128CE /* CameraCapturePreviewView.swift in Sources */,
+				7EF0F8FC28B1A4CB009128CE /* UIImage+Extensions.swift in Sources */,
+				7EF0F8F728B1A352009128CE /* my_custom_model.mlmodel in Sources */,
+				7EF0F8F428B1A258009128CE /* OnboardingView.swift in Sources */,
+				7EC1DEDB28A9C8D600CEA0CC /* RPS_ScorerApp.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		7EC1DEE028A9C8D600CEA0CC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		7EC1DEE128A9C8D600CEA0CC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++17";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+			};
+			name = Release;
+		};
+		7EC1DEE328A9C8D600CEA0CC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 9NY68F4K3P;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "Camera must be allowed in order to enable live object detection";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.samuelfolledo.RPS-Scorer";
+				PRODUCT_NAME = "RPS Scorer";
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		7EC1DEE428A9C8D600CEA0CC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 9NY68F4K3P;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSCameraUsageDescription = "Camera must be allowed in order to enable live object detection";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.5;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.samuelfolledo.RPS-Scorer";
+				PRODUCT_NAME = "RPS Scorer";
+				SDKROOT = iphoneos;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		7EC1DEE628A9C8D600CEA0CC /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = macOS/macOS.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 9NY68F4K3P;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 12.3;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.samuelfolledo.RPS-Scorer";
+				PRODUCT_NAME = "RPS Scorer";
+				SDKROOT = macosx;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		7EC1DEE728A9C8D600CEA0CC /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = macOS/macOS.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 9NY68F4K3P;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 12.3;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.samuelfolledo.RPS-Scorer";
+				PRODUCT_NAME = "RPS Scorer";
+				SDKROOT = macosx;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		7EC1DEC828A9C8D500CEA0CC /* Build configuration list for PBXProject "RPS Scorer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7EC1DEE028A9C8D600CEA0CC /* Debug */,
+				7EC1DEE128A9C8D600CEA0CC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		7EC1DEE228A9C8D600CEA0CC /* Build configuration list for PBXNativeTarget "RPS Scorer (iOS)" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7EC1DEE328A9C8D600CEA0CC /* Debug */,
+				7EC1DEE428A9C8D600CEA0CC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		7EC1DEE528A9C8D600CEA0CC /* Build configuration list for PBXNativeTarget "RPS Scorer (macOS)" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				7EC1DEE628A9C8D600CEA0CC /* Debug */,
+				7EC1DEE728A9C8D600CEA0CC /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 7EC1DEC528A9C8D500CEA0CC /* Project object */;
+}
