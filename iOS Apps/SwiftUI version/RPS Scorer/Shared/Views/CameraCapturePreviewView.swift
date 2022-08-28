@@ -24,8 +24,9 @@ struct CameraCapturePreviewView: UIViewRepresentable {
 class UICameraCapturePreviewView: UIView {
     // AVCaptureVideoDataOutputSampleBufferDelegate
     // when you want to handle the video input every second, you will add the delegate
-    var recognitionInterval = 0 //Interval for object recognition
-    var captureSession: AVCaptureSession!
+    private var recognitionInterval = 0 //Interval for object recognition
+    private var clearLayersInterval = 0
+    private var captureSession: AVCaptureSession!
     ///the layers that shows the detected object's location
     private var overlayLayers = [CALayer]()
     ///minimum confidence threshold for detected objects
@@ -142,8 +143,19 @@ extension UICameraCapturePreviewView: AVCaptureVideoDataOutputSampleBufferDelega
                 return
             }
             guard let results = request.results as? [VNRecognizedObjectObservation],
-                  !results.isEmpty
-            else { return }
+                !results.isEmpty else {
+                //clear layers after a couple of empty results
+                if self.clearLayersInterval < 10 {
+                    self.clearLayersInterval += 1
+                } else {
+                    self.clearLayersInterval = 0
+                    DispatchQueue.main.async {
+                        self.removeMasks()
+                    }
+                }
+                return
+            }
+            self.clearLayersInterval = 0
             // Execute it in the main thread
             DispatchQueue.main.async {
                 self.handleObservations(results: results)
